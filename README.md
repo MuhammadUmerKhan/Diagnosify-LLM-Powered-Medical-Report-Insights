@@ -188,7 +188,7 @@ Contributions are welcome! To contribute:
 
 ## 📧 Contact
 
-For questions, feedback, or collaboration, reach out to Muhammad Umer Khan at [your-email@example.com].
+For questions, feedback, or collaboration, reach out to Muhammad Umer Khan at [muhammadumerk546@gmail.com].
 
 ## 🙌 Acknowledgments
 
