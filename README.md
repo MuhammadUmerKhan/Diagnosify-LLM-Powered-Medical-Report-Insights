@@ -1,6 +1,6 @@
 # 🩺 AI Medical Report Analyzer 🌟
 
-![Project Banner](https://via.placeholder.com/1200x400.png?text=AI+Medical+Report+Analyzer)  
+![Project Banner](https://r2.erweima.ai/i/1nyAf1TvSzqEczv-3hXPVA.png)  
 *Simplifying Medical Insights with AI 🚀*
 
 ## 📋 Overview
@@ -70,7 +70,7 @@ AI-Medical-Report-Analyzer-Assistant/
 
 ### Prerequisites
 - **Python**: Version 3.12 or higher 🐍
-- **Groq API Key**: Obtain a key from [x.ai](https://x.ai/api) to use the LLM 🔑
+- **Groq API Key**: Obtain a key from [GroqCloud](https://console.groq.com/keys) to use the LLM 🔑
 - **System Dependencies** (for OCR):
   - On Ubuntu: `sudo apt-get install tesseract-ocr libtesseract-dev`
   - On macOS: `brew install tesseract`
@@ -79,7 +79,7 @@ AI-Medical-Report-Analyzer-Assistant/
 ### Installation
 1. **Clone the Repository** (if applicable):
    ```bash
-   git clone https://github.com/your-username/AI-Medical-Report-Analyzer-Assistant.git
+   git clone https://github.com/MuhammadUmerKhan/SMIT-Hackathon-AI-Medical-Report-Analyzer
    cd AI-Medical-Report-Analyzer-Assistant
    ```
 2. **Set Up a Virtual Environment** (recommended):
