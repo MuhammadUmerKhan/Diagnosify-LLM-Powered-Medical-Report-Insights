@@ -1,25 +1,25 @@
-AI-Medical-Report-Analyzer-Assistant/
+AI-Medical-Report-Analyzer-Assistant/ 🌍
 │
 │
-├── logs/                   # Directory for log files (auto-generated)
-│   └── app.log             # Log file for application events
-├── tmp/                    # Temporary directory for file processing (auto-generated)
-├── src/                    # Core logic package
-│   ├── __init__.py         # Marks src as a Python package
-│   ├── chatbot.py          # Interactive chatbot for user queries
-│   ├── ocr.py              # Text extraction from images/PDFs using OCR
-│   ├── nlp.py              # Structures raw text into usable data
-│   ├── categorize.py       # Categorizes test results (Normal, Borderline, Critical)
-│   ├── table_formatter.py  # Formats data into tables for display
-│   ├── explain.py          # Generates explanations using Groq LLM
-│   ├── summary.py          # Creates summaries with risks and recommendations
-│   ├── pdf_generator.py    # Generates downloadable PDF summaries
-│   └── README.md           # Documentation for the src package
+├── logs/ 📋                   # Directory for log files (auto-generated)
+│   └── app.log 📝             # Log file for application events
+├── tmp/ ⏳                    # Temporary directory for file processing (auto-generated)
+├── src/ 🛠️                    # Core logic package
+│   ├── __init__.py 📦         # Marks src as a Python package
+│   ├── chatbot.py 💬          # Interactive chatbot for user queries
+│   ├── ocr.py 📷              # Text extraction from images/PDFs using OCR
+│   ├── nlp.py 🧩              # Structures raw text into usable data
+│   ├── categorize.py 🔍       # Categorizes test results (Normal, Borderline, Critical)
+│   ├── table_formatter.py 📊  # Formats data into tables for display
+│   ├── explain.py 📖          # Generates explanations using Groq LLM
+│   ├── summary.py 📑          # Creates summaries with risks and recommendations
+│   ├── pdf_generator.py 📄    # Generates downloadable PDF summaries
+│   └── README.md 📚           # Documentation for the src package
 │
-├── app.py                  # Main application entry point (Streamlit UI)
+├── app.py 🌐                  # Main application entry point (Streamlit UI)
 │
-├── requirements.txt        # List of Python dependencies
+├── requirements.txt 📋        # List of Python dependencies
 │
-├── .env                    # Environment variables (e.g., GROQ_API_KEY)
+├── .env 🔐                    # Environment variables (e.g., GROQ_API_KEY)
 │
-└── README.md               # Project-level documentation (this file)
+└── README.md 📖               # Project-level documentation (this file)
