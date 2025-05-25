@@ -1,0 +1,65 @@
+2025-05-25 06:39:00,460 [INFO] GROQ_API_KEY environment variable not set
+2025-05-25 06:39:00,564 [INFO] Starting text extraction for file: /tmp/tmp9k5bmkko.pdf
+2025-05-25 06:39:00,566 [INFO] Extracting text from PDF: /tmp/tmp9k5bmkko.pdf
+2025-05-25 06:39:00,663 [INFO] PDF text extraction completed
+2025-05-25 06:39:00,663 [INFO] Text extracted from PDF
+2025-05-25 06:39:00,664 [INFO] Extracting structured data using LLM.
+2025-05-25 06:39:01,410 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:01,412 [INFO] ✅ Response received from Groq.
+2025-05-25 06:39:01,412 [INFO] Extracted 1 results from LLM response
+2025-05-25 06:39:01,413 [INFO] Categorizing medical report data using LLM
+2025-05-25 06:39:02,122 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:02,123 [INFO] ✅ Response received from Groq for categorization
+2025-05-25 06:39:02,124 [INFO] Categorized 1 results
+2025-05-25 06:39:02,124 [INFO] 🔁 Formatting results for table using LLM
+2025-05-25 06:39:02,536 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:02,537 [INFO] ✅ Successfully formatted 1 rows for table.
+2025-05-25 06:39:02,545 [INFO] Generating batch explanations for all categorized test results.
+2025-05-25 06:39:03,367 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:03,371 [INFO] ✅ Batch explanations received.
+2025-05-25 06:39:03,373 [INFO] Generating summary bullet points from explanations
+2025-05-25 06:39:04,178 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:04,181 [INFO] Temporary file deleted: /tmp/tmp9k5bmkko.pdf
+2025-05-25 06:39:36,746 [INFO] GROQ_API_KEY environment variable not set
+2025-05-25 06:39:36,971 [INFO] Starting text extraction for file: /tmp/tmp7n9ug2qr.pdf
+2025-05-25 06:39:36,973 [INFO] Extracting text from PDF: /tmp/tmp7n9ug2qr.pdf
+2025-05-25 06:39:37,118 [INFO] PDF text extraction completed
+2025-05-25 06:39:37,118 [INFO] Text extracted from PDF
+2025-05-25 06:39:37,118 [INFO] Extracting structured data using LLM.
+2025-05-25 06:39:37,808 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:37,810 [INFO] ✅ Response received from Groq.
+2025-05-25 06:39:37,810 [INFO] Extracted 1 results from LLM response
+2025-05-25 06:39:37,811 [INFO] Categorizing medical report data using LLM
+2025-05-25 06:39:38,405 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:38,406 [INFO] ✅ Response received from Groq for categorization
+2025-05-25 06:39:38,407 [INFO] Categorized 1 results
+2025-05-25 06:39:38,407 [INFO] 🔁 Formatting results for table using LLM
+2025-05-25 06:39:38,816 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:38,818 [INFO] ✅ Successfully formatted 1 rows for table.
+2025-05-25 06:39:38,831 [INFO] Generating batch explanations for all categorized test results.
+2025-05-25 06:39:39,519 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:39:39,521 [INFO] ✅ Batch explanations received.
+2025-05-25 06:39:39,522 [INFO] Generating summary bullet points from explanations
+2025-05-25 06:39:41,118 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:40:00,544 [INFO] GROQ_API_KEY environment variable not set
+2025-05-25 06:40:00,667 [INFO] Starting text extraction for file: /tmp/tmpkaviz2f6.pdf
+2025-05-25 06:40:00,669 [INFO] Extracting text from PDF: /tmp/tmpkaviz2f6.pdf
+2025-05-25 06:40:00,846 [INFO] PDF text extraction completed
+2025-05-25 06:40:00,846 [INFO] Text extracted from PDF
+2025-05-25 06:40:00,847 [INFO] Extracting structured data using LLM.
+2025-05-25 06:40:01,486 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:40:01,488 [INFO] ✅ Response received from Groq.
+2025-05-25 06:40:01,489 [INFO] Extracted 1 results from LLM response
+2025-05-25 06:40:01,489 [INFO] Categorizing medical report data using LLM
+2025-05-25 06:40:02,100 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:40:02,102 [INFO] ✅ Response received from Groq for categorization
+2025-05-25 06:40:02,103 [INFO] Categorized 1 results
+2025-05-25 06:40:02,103 [INFO] 🔁 Formatting results for table using LLM
+2025-05-25 06:40:02,529 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:40:02,531 [INFO] ✅ Successfully formatted 1 rows for table.
+2025-05-25 06:40:02,540 [INFO] Generating batch explanations for all categorized test results.
+2025-05-25 06:40:03,269 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:40:03,270 [INFO] ✅ Batch explanations received.
+2025-05-25 06:40:03,271 [INFO] Generating summary bullet points from explanations
+2025-05-25 06:40:04,812 [INFO] HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2025-05-25 06:40:04,818 [INFO] Temporary file deleted: /tmp/tmpkaviz2f6.pdf
