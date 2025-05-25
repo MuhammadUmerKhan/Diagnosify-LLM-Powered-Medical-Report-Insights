@@ -1,18 +1,19 @@
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.platypus import (
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, ListFlowable, ListItem
+)
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_LEFT
+from reportlab.lib import colors
+from io import BytesIO
 from typing import List, Dict
 import logging, os
-from io import BytesIO
 
-os.makedirs(os.path.join("logs"), exist_ok=True)  # 📂 Creates a 'logs' directory if it doesn't exist
-logging.basicConfig(  # ⚙️ Configures the logging system with specified settings
-    level=logging.INFO,  # 📏 Sets logging level to INFO to capture informational messages and above
-    format="%(asctime)s [%(levelname)s] %(message)s",  # 📝 Defines log message format: timestamp, level, and message
-    handlers=[  # 📤 Specifies where logs are sent
-        logging.FileHandler(os.path.join("logs", "app.log")),  # 📜 Logs to a file named 'logging.log' in the 'logs' directory
-        logging.StreamHandler()  # 🖥️ Also logs to the console (standard output)
-    ]
+os.makedirs("logs", exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.FileHandler("logs/app.log"), logging.StreamHandler()],
 )
 
 def generate_pdf_summary(
@@ -21,69 +22,100 @@ def generate_pdf_summary(
     summary_bullets: str,
     output_path: str = None
 ) -> bytes:
-    """Generate a PDF summary of the results, explanations, and summary bullet points and return as bytes."""
-    logging.info("Generating PDF summary in memory")
+    logging.info("Generating improved PDF summary")
     buffer = BytesIO()
     try:
         doc = SimpleDocTemplate(buffer, pagesize=letter)
         styles = getSampleStyleSheet()
+        styles.add(ParagraphStyle(name='List', leftIndent=20, fontSize=10, spaceAfter=6))
         story = []
-        
+
         # Title
-        story.append(Paragraph("Medical Report Summary", styles["Title"]))
+        story.append(Paragraph("🩺 Medical Report Summary", styles["Title"]))
         story.append(Spacer(1, 12))
-        
+
         # Metadata
         metadata = [r for r in results if "test_name" not in r]
         if metadata:
-            story.append(Paragraph("<b>Patient Information</b>", styles["Heading2"]))
+            story.append(Paragraph("👤 Patient Information", styles["Heading2"]))
             for item in metadata:
-                # Format metadata into a more readable structure with line breaks
-                fields = "<br/>".join(f"<b>{key}:</b> {value}" for key, value in item.items())
-                story.append(Paragraph(fields, styles["Normal"]))
+                for key, value in item.items():
+                    story.append(Paragraph(f"<b>{key.capitalize()}</b>: {value}", styles["Normal"]))
             story.append(Spacer(1, 12))
-        
+
         # Test Results
         test_results = [r for r in results if "test_name" in r]
         if test_results:
-            story.append(Paragraph("<b>Test Results</b>", styles["Heading2"]))
-            for result in test_results:
-                # Format test results with proper structure
-                test_name = result.get('test_name', 'Unknown')
-                fields = "<br/>".join(f"<b>{key}:</b> {value}" if key != 'test_name' else "" for key, value in result.items())
-                story.append(Paragraph(f"<b>Test:</b> {test_name}<br/>{fields}", styles["Normal"]))
-                story.append(Spacer(1, 6))  # Small space between test results
+            story.append(Paragraph("🧪 Test Results", styles["Heading2"]))
+            data = [["Test Name", "Value", "Unit", "Normal Range", "Status"]]
+            for res in test_results:
+                data.append([
+                    res.get("test_name", "Unknown"),
+                    res.get("value", "Unknown"),
+                    res.get("unit", "Unknown"),
+                    res.get("normal_range", ""),
+                    res.get("status", "Unknown")
+                ])
+            table = Table(data, hAlign='LEFT', colWidths=[130, 70, 70, 130, 80])
+            table.setStyle(TableStyle([
+                ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+                ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+            ]))
+            story.append(table)
             story.append(Spacer(1, 12))
-        
+
         # Explanations
         if explanations:
-            story.append(Paragraph("<b>Explanations</b>", styles["Heading2"]))
-            # Clean up explanations text and format it
-            cleaned_explanations = explanations.replace("\n", " ").replace("  ", " ")  # Normalize spaces
-            cleaned_explanations = cleaned_explanations.replace("**", "<b>").replace("**", "</b>")  # Convert markdown bold to HTML
-            cleaned_explanations = cleaned_explanations.replace(" - ", "<br/>• ")  # Convert bullet points
-            # Split into paragraphs where there are double spaces or logical breaks
-            paragraphs = cleaned_explanations.split("Your value is")
-            formatted_explanations = "<br/><br/>".join(paragraphs)
-            story.append(Paragraph(f"<p>{formatted_explanations}</p>", styles["Normal"]))
+            story.append(Paragraph("🧾 Explanation", styles["Heading2"]))
+            explanation_clean = explanations.replace("\n", " ").strip()
+            story.append(Paragraph(explanation_clean, styles["Normal"]))
             story.append(Spacer(1, 12))
-        
-        # Summary, Risks, and Actions
+
+        # Summary and Recommendations
         if summary_bullets:
-            story.append(Paragraph("<b>Summary and Recommendations</b>", styles["Heading2"]))
-            # Clean up summary bullets and format them
-            cleaned_summary = summary_bullets.replace("\n", " ").replace("  ", " ")  # Normalize spaces
-            cleaned_summary = cleaned_summary.replace("**Summary:**", "<b>Summary:</b>")
-            cleaned_summary = cleaned_summary.replace("**Risks/Conditions:**", "<b>Risks/Conditions:</b>")
-            cleaned_summary = cleaned_summary.replace("**Actions/Recommendations:**", "<b>Actions/Recommendations:</b>")
-            cleaned_summary = cleaned_summary.replace("* ", "<br/>• ")  # Convert bullet points
-            story.append(Paragraph(f"<p>{cleaned_summary}</p>", styles["Normal"]))
-        
+            story.append(Paragraph("📌 Summary and Recommendations", styles["Heading2"]))
+
+            try:
+                import re
+                # Parse sections from the string
+                summary_match = re.search(r"\*\*Summary:\*\*(.*?)\*\*", summary_bullets, re.DOTALL)
+                risks_match = re.search(r"\*\*Risks/Conditions:\*\*(.*?)\*\*", summary_bullets, re.DOTALL)
+                actions_match = re.search(r"\*\*Actions/Recommendations:\*\*(.*)", summary_bullets, re.DOTALL)
+
+                if summary_match:
+                    story.append(Paragraph("📋 <b>Summary:</b>", styles["Normal"]))
+                    summary_lines = summary_match.group(1).strip().split("*")
+                    summary_items = [ListItem(Paragraph(line.strip(), styles["List"])) for line in summary_lines if line.strip()]
+                    story.append(ListFlowable(summary_items, bulletType='bullet'))
+
+                if risks_match:
+                    story.append(Spacer(1, 6))
+                    story.append(Paragraph("⚠️ <b>Risks/Conditions:</b>", styles["Normal"]))
+                    risk_lines = risks_match.group(1).strip().split("*")
+                    risk_items = [ListItem(Paragraph(line.strip(), styles["List"])) for line in risk_lines if line.strip()]
+                    story.append(ListFlowable(risk_items, bulletType='bullet'))
+
+                if actions_match:
+                    story.append(Spacer(1, 6))
+                    story.append(Paragraph("✅ <b>Actions/Recommendations:</b>", styles["Normal"]))
+                    action_lines = actions_match.group(1).strip().split("*")
+                    action_items = [ListItem(Paragraph(line.strip(), styles["List"])) for line in action_lines if line.strip()]
+                    story.append(ListFlowable(action_items, bulletType='bullet'))
+
+            except Exception as e:
+                logging.warning("Failed to parse summary bullet points. Falling back to plain text.")
+                story.append(Paragraph(summary_bullets.replace("\n", " "), styles["Normal"]))
+
         doc.build(story)
         pdf_bytes = buffer.getvalue()
         buffer.close()
-        logging.info("PDF summary generated successfully")
+        logging.info("Improved PDF summary generated successfully")
         return pdf_bytes
+
     except Exception as e:
         logging.error(f"Error generating PDF: {str(e)}")
         raise
