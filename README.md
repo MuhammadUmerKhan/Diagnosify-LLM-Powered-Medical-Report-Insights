@@ -180,6 +180,9 @@ Contributions are welcome! To contribute:
    ```
 5. Submit a pull request with a detailed description of your changes.
 
+## 🎯 Live Demo:
+- [Click here](https://smit-hackathon-ai-medical-report-analyzer.streamlit.app/)
+
 ### Contribution Ideas
 - Add support for more file formats (e.g., DOCX). 📜
 - Enhance the chatbot with more advanced RAG techniques. 🔍
