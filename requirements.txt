@@ -12,4 +12,4 @@ reportlab
 pypdf
 faiss-cpu 
 opencv-python
-pypdf
+PyPDF2
