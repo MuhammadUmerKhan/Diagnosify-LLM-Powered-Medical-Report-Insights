@@ -7,9 +7,9 @@ langchain_core
 pytesseract
 langchain_text_splitters
 streamlit
-pdfplumber
 huggingface_hub
 reportlab
 pypdf
 faiss-cpu 
 opencv-python
+pypdf
