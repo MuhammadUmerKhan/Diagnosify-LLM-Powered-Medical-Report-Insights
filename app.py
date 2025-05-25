@@ -277,18 +277,17 @@ with tab2:
                     st.markdown('<p class="warning">⚠️ No explanations available for summary.</p>', unsafe_allow_html=True)
                 st.markdown('</div>', unsafe_allow_html=True)
 
-                # Step 8: Generate PDF Summary
+                # Step 8: Generate and Download PDF Summary
                 st.markdown('<div class="card">', unsafe_allow_html=True)
                 st.markdown("<h3 style='color:#00e5ff'>📄 Download Summary 📥</h3>", unsafe_allow_html=True)
                 if test_results and explanation:
-                    if st.button("📄 Generate PDF Summary 🌟"):
-                        pdf_bytes = generate_pdf_summary(categorized_data, explanation, summary_bullets)
-                        st.download_button(
-                            label="💾 Save PDF Report 🎯",
-                            data=pdf_bytes,
-                            file_name="medical_summary.pdf",
-                            mime="application/pdf"
-                        )
+                    pdf_bytes = generate_pdf_summary(categorized_data, explanation, summary_bullets)
+                    st.download_button(
+                        label="💾 Download PDF Report 🎯",
+                        data=pdf_bytes,
+                        file_name="medical_summary.pdf",
+                        mime="application/pdf"
+                    )
                 st.markdown('</div>', unsafe_allow_html=True)
 
                 # Clean up
