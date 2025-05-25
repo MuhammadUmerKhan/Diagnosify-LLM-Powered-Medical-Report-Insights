@@ -126,7 +126,7 @@ h1, h2, h3 {
 st.sidebar.title("📋 About the Project 🌐")
 st.sidebar.markdown("""
 <p style='color:#00ff99'><b>AI Medical Report Analyzer</b> 🎯</p>
-<p style='color:#00e5ff'>Crafted for the Hackathon by <b>Muhammad Umer Khan</b> 💻<br>
+<p style='color:#00e5ff'>Crafted for the Hackathon by <b><a href="https://www.linkedin.com/in/muhammad-umer-khan-61729b260/">Muhammad Umer Khan</a></b> 💻<br>
 This app harnesses cutting-edge AI to extract, categorize, and explain medical test results, delivering clear, patient-friendly insights! ✨🚪<br>
 <b>Powered by Groq LLM and Streamlit</b> ⚡</p>
 """, unsafe_allow_html=True)
@@ -184,7 +184,7 @@ with tab1:
 
     st.markdown("<h2 style='color:#ffd700'>Team 👥</h2>", unsafe_allow_html=True)
     st.markdown("""
-        <p style='color:#00ff99'>Developed by <b>Muhammad Umer Khan</b> with dedication and innovation for the Hackathon! 🚀</p>
+        <p style='color:#00ff99'>Developed by <b><a href="https://www.linkedin.com/in/muhammad-umer-khan-61729b260/">Muhammad Umer Khan</a></b> with dedication and innovation for the Hackathon! 🚀</p>
     """, unsafe_allow_html=True)
 
     st.markdown("<h2 style='color:#ffd700'>Get Started 🎉</h2>", unsafe_allow_html=True)
