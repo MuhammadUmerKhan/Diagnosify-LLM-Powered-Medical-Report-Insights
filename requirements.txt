@@ -13,4 +13,3 @@ reportlab
 pypdf
 faiss-cpu 
 opencv-python
-opencv-python-headless==4.9.0
