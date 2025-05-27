@@ -1,11 +1,10 @@
 # 🩺 AI Medical Report Analyzer 🌟
 
-![Project Banner](https://r2.erweima.ai/i/1nyAf1TvSzqEczv-3hXPVA.png)  
-*Simplifying Medical Insights with AI 🚀*
-
 ## 📋 Overview
 
 The **AI Medical Report Analyzer** is a cutting-edge application designed to simplify the interpretation of medical reports for patients. Built as part of a hackathon by **Muhammad Umer Khan**, this project leverages advanced AI technologies to extract, categorize, and explain medical test results, delivering clear, patient-friendly insights through an intuitive web interface. The app supports multiple file formats (PDFs, PNGs, JPEGs) and provides detailed analysis, summaries, and an interactive chatbot for answering health-related queries.
+
+![Project Banner](https://r2.erweima.ai/i/1nyAf1TvSzqEczv-3hXPVA.png)  
 
 ### 🎯 Key Objectives
 - **Extract**: Automatically extract text from medical reports using OCR. 📄
