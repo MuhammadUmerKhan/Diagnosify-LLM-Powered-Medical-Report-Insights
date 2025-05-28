@@ -2,7 +2,7 @@
 
 ## 📋 Overview
 
-The **AI Medical Report Analyzer** is a cutting-edge application designed to simplify the interpretation of medical reports for patients. Built as part of a hackathon by **Muhammad Umer Khan**, this project leverages advanced AI technologies to extract, categorize, and explain medical test results, delivering clear, patient-friendly insights through an intuitive web interface. The app supports multiple file formats (PDFs, PNGs, JPEGs) and provides detailed analysis, summaries, and an interactive chatbot for answering health-related queries.
+The **AI Medical Report Analyzer** is a cutting-edge application designed to simplify the interpretation of medical reports for patients. Built as part of a hackathon, this project leverages advanced AI technologies to extract, categorize, and explain medical test results, delivering clear, patient-friendly insights through an intuitive web interface. The app supports multiple file formats (PDFs, PNGs, JPEGs) and provides detailed analysis, summaries, and an interactive chatbot for answering health-related queries.
 
 <img src="https://cdn.prod.website-files.com/61d48f722324914c384ef59a/65f8c1ae4a5428edab845cd2_Template%2013.webp" height="600" alt="Project Banner">
 
