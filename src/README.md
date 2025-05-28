@@ -1,4 +1,4 @@
-# AI Medical Report Analyzer - `src` Folder Documentation
+# Diagnosify – AI-Powered Medical Insight Engine - `src` Folder Documentation
 
 ## Overview
 

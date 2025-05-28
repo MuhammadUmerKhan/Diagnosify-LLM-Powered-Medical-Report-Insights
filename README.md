@@ -1,4 +1,4 @@
-# 🩺 AI Medical Report Analyzer 🌟
+# 🩺 Diagnosify – AI-Powered Medical Insight Engine 🌟
 
 ## 📋 Overview
 
