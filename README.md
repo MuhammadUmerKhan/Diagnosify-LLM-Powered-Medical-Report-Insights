@@ -1,4 +1,4 @@
-# 🩺 Diagnosify – AI-Powered Medical Insight Engine 🌟
+# 🩺 Diagnosify – AI-Powered Medical Insight Engine
 
 ## 📋 Overview
 
