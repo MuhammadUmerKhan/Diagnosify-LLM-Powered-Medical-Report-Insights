@@ -1,4 +1,4 @@
-# 🩺 Diagnosify – AI-Powered Medical Insight Engine
+# 🩺 Diagnosify: LLM-Powered Medical Report Insights
 
 ## 📋 Overview
 
