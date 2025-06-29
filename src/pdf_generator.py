@@ -7,14 +7,9 @@ from reportlab.lib.enums import TA_LEFT
 from reportlab.lib import colors
 from io import BytesIO
 from typing import List, Dict
-import logging, os
+from src.logger import get_logger
 
-os.makedirs("logs", exist_ok=True)
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s",
-    handlers=[logging.FileHandler("logs/app.log"), logging.StreamHandler()],
-)
+logger = get_logger(__name__)
 
 def generate_pdf_summary(
     results: List[Dict],
@@ -22,7 +17,7 @@ def generate_pdf_summary(
     summary_bullets: str,
     output_path: str = None
 ) -> bytes:
-    logging.info("Generating improved PDF summary")
+    logger.info("Generating improved PDF summary")
     buffer = BytesIO()
     try:
         doc = SimpleDocTemplate(buffer, pagesize=letter)
@@ -107,15 +102,15 @@ def generate_pdf_summary(
                     story.append(ListFlowable(action_items, bulletType='bullet'))
 
             except Exception as e:
-                logging.warning("Failed to parse summary bullet points. Falling back to plain text.")
+                logger.warning("Failed to parse summary bullet points. Falling back to plain text.")
                 story.append(Paragraph(summary_bullets.replace("\n", " "), styles["Normal"]))
 
         doc.build(story)
         pdf_bytes = buffer.getvalue()
         buffer.close()
-        logging.info("Improved PDF summary generated successfully")
+        logger.info("Improved PDF summary generated successfully")
         return pdf_bytes
 
     except Exception as e:
-        logging.error(f"Error generating PDF: {str(e)}")
+        logger.error(f"Error generating PDF: {str(e)}")
         raise

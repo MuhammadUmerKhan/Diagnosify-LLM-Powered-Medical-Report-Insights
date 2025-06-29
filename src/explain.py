@@ -1,30 +1,18 @@
-import logging
 from langchain_core.messages import SystemMessage, HumanMessage
-from langchain_groq import ChatGroq
 from typing import Dict, List
-from src.config import llm, GROQ_API_KEY
-import os, json
-from dotenv import load_dotenv
+from src.logger import get_logger
+from src.utils import configure_llm
+import json
 # import nlp, categorize
 
-load_dotenv()
-
-os.makedirs(os.path.join("logs"), exist_ok=True)  # 📂 Creates a 'logs' directory if it doesn't exist
-logging.basicConfig(  # ⚙️ Configures the logging system with specified settings
-    level=logging.INFO,  # 📏 Sets logging level to INFO to capture informational messages and above
-    format="%(asctime)s [%(levelname)s] %(message)s",  # 📝 Defines log message format: timestamp, level, and message
-    handlers=[  # 📤 Specifies where logs are sent
-        logging.FileHandler(os.path.join("logs", "app.log")),  # 📜 Logs to a file named 'logging.log' in the 'logs' directory
-        logging.StreamHandler()  # 🖥️ Also logs to the console (standard output)
-    ]
-)
+logger = get_logger(__name__)
 
 def explain_results_batch(results: List[Dict]) -> str:
     """
     Send all categorized results to the LLM and request detailed explanations
     for each one in a single response.
     """
-    logging.info("Generating batch explanations for all categorized test results.")
+    logger.info("Generating batch explanations for all categorized test results.")
 
     try:
         input_data = json.dumps(results, indent=2)
@@ -60,13 +48,13 @@ def explain_results_batch(results: List[Dict]) -> str:
             HumanMessage(content=prompt)
         ]
 
-        response = llm.invoke(messages)
+        response = configure_llm().invoke(messages)
         explanation = response.content.strip()
-        logging.info("✅ Batch explanations received.")
+        logger.info("✅ Batch explanations received.")
         return explanation
 
     except Exception as e:
-        logging.error(f"❌ Error generating batch explanation: {str(e)}")
+        logger.error(f"❌ Error generating batch explanation: {str(e)}")
         return "Unable to generate explanations due to an error."
 
 

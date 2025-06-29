@@ -1,23 +1,11 @@
-import logging
-import os
-from dotenv import load_dotenv
-from langchain_core.messages import SystemMessage, HumanMessage
 import json
-from src.config import llm, GROQ_API_KEY
+from langchain_core.messages import SystemMessage, HumanMessage
+from src.utils import configure_llm
+from src.logger import get_logger
 # import nlp
 from typing import List, Dict
 
-load_dotenv()
-
-os.makedirs(os.path.join("logs"), exist_ok=True)  # 📂 Creates a 'logs' directory if it doesn't exist
-logging.basicConfig(  # ⚙️ Configures the logging system with specified settings
-    level=logging.INFO,  # 📏 Sets logging level to INFO to capture informational messages and above
-    format="%(asctime)s [%(levelname)s] %(message)s",  # 📝 Defines log message format: timestamp, level, and message
-    handlers=[  # 📤 Specifies where logs are sent
-        logging.FileHandler(os.path.join("logs", "app.log")),  # 📜 Logs to a file named 'logging.log' in the 'logs' directory
-        logging.StreamHandler()  # 🖥️ Also logs to the console (standard output)
-    ]
-)
+logger = get_logger(__name__)
     
 
 def categorize_results(results: List[Dict]) -> List[Dict]:
@@ -25,7 +13,7 @@ def categorize_results(results: List[Dict]) -> List[Dict]:
     Use Groq LLM to categorize medical report data based on provided fields.
     Returns the list of dictionaries with a 'status' field added where applicable.
     """
-    logging.info("Categorizing medical report data using LLM")
+    logger.info("Categorizing medical report data using LLM")
     try:
         # Convert results to a string for the prompt
         results_text = json.dumps(results, indent=2)
@@ -57,22 +45,22 @@ def categorize_results(results: List[Dict]) -> List[Dict]:
             HumanMessage(content=prompt)
         ]
         
-        response = llm.invoke(messages)
-        logging.info("✅ Response received from Groq for categorization")
+        response = configure_llm().invoke(messages)
+        logger.info("✅ Response received from Groq for categorization")
         
         # Parse JSON response
         try:
             categorized_results = json.loads(response.content.strip())
             if not isinstance(categorized_results, list):
-                logging.warning("LLM returned non-list response for categorization")
+                logger.warning("LLM returned non-list response for categorization")
                 return results  # Return original results if parsing fails
-            logging.info(f"Categorized {len(categorized_results)} results")
+            logger.info(f"Categorized {len(categorized_results)} results")
             return categorized_results
         except json.JSONDecodeError as e:
-            logging.error(f"Failed to parse LLM categorization response as JSON: {str(e)}")
+            logger.error(f"Failed to parse LLM categorization response as JSON: {str(e)}")
             return results  # Return original results if parsing fails
     except Exception as e:
-        logging.exception(f"LLM categorization failed: {str(e)}")
+        logger.exception(f"LLM categorization failed: {str(e)}")
         return results  # Return original results on failure
 
 # if __name__ == "__main__":

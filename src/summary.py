@@ -1,22 +1,10 @@
-import logging
 from langchain_core.messages import SystemMessage, HumanMessage
-from typing import List, Dict
-from src.config import llm, GROQ_API_KEY
-import os
+from src.utils import configure_llm
+from src.logger import get_logger
 # import nlp, explain, categorize, preprocess, table_formatter
-from dotenv import load_dotenv
 
-load_dotenv()
+logger = get_logger(__name__)
 
-os.makedirs(os.path.join("logs"), exist_ok=True)  # 📂 Creates a 'logs' directory if it doesn't exist
-logging.basicConfig(  # ⚙️ Configures the logging system with specified settings
-    level=logging.INFO,  # 📏 Sets logging level to INFO to capture informational messages and above
-    format="%(asctime)s [%(levelname)s] %(message)s",  # 📝 Defines log message format: timestamp, level, and message
-    handlers=[  # 📤 Specifies where logs are sent
-        logging.FileHandler(os.path.join("logs", "app.log")),  # 📜 Logs to a file named 'logging.log' in the 'logs' directory
-        logging.StreamHandler()  # 🖥️ Also logs to the console (standard output)
-    ]
-)
 
 def generate_summary_bullet_points(explanations: str) -> str:
     """
@@ -27,7 +15,7 @@ def generate_summary_bullet_points(explanations: str) -> str:
 
     All returned in plain text bullet points.
     """
-    logging.info("Generating summary bullet points from explanations")
+    logger.info("Generating summary bullet points from explanations")
 
     try:
         prompt = f"""
@@ -52,11 +40,11 @@ def generate_summary_bullet_points(explanations: str) -> str:
             HumanMessage(content=prompt)
         ]
 
-        response = llm.invoke(messages)
+        response = configure_llm().invoke(messages)
         return response.content.strip()
 
     except Exception as e:
-        logging.error(f"❌ Error generating bullet summary: {str(e)}")
+        logger.error(f"❌ Error generating bullet summary: {str(e)}")
         return "Unable to generate summary due to an error."
 
 # if __name__ == "__main__":

@@ -1,30 +1,17 @@
-import logging
-import os
-from dotenv import load_dotenv
-from langchain_core.messages import SystemMessage, HumanMessage
-from src.config import llm, GROQ_API_KEY
 import json
+from langchain_core.messages import SystemMessage, HumanMessage
+from src.logger import get_logger
+from src.utils import configure_llm
 from typing import List, Dict
 
-load_dotenv()
-
-# Set up logging
-os.makedirs(os.path.join("logs"), exist_ok=True)  # 📂 Creates a 'logs' directory if it doesn't exist
-logging.basicConfig(  # ⚙️ Configures the logging system with specified settings
-    level=logging.INFO,  # 📏 Sets logging level to INFO to capture informational messages and above
-    format="%(asctime)s [%(levelname)s] %(message)s",  # 📝 Defines log message format: timestamp, level, and message
-    handlers=[  # 📤 Specifies where logs are sent
-        logging.FileHandler(os.path.join("logs", "app.log")),  # 📜 Logs to a file named 'logging.log' in the 'logs' directory
-        logging.StreamHandler()  # 🖥️ Also logs to the console (standard output)
-    ]
-)
+logger = get_logger(__name__)
 
 def structure_data(text: str) -> List[Dict]:
     """
     Use Groq LLM to extract all explicitly mentioned test result information from medical report text.
     Returns a list of dictionaries with all fields found in the report.
     """
-    logging.info("Extracting structured data using LLM.")
+    logger.info("Extracting structured data using LLM.")
     try:
         # Define prompt for LLM
         messages = [
@@ -47,22 +34,22 @@ def structure_data(text: str) -> List[Dict]:
                 """)
         ]
 
-        response = llm.invoke(messages)
-        logging.info("✅ Response received from Groq.")
+        response = configure_llm().invoke(messages)
+        logger.info("✅ Response received from Groq.")
         
         # Parse JSON response
         try:
             results = json.loads(response.content.strip())
             if not isinstance(results, list):
-                logging.warning("LLM returned non-list response")
+                logger.warning("LLM returned non-list response")
                 return []
-            logging.info(f"Extracted {len(results)} results from LLM response")
+            logger.info(f"Extracted {len(results)} results from LLM response")
             return results
         except json.JSONDecodeError as e:
-            logging.error(f"Failed to parse LLM response as JSON: {str(e)}")
+            logger.error(f"Failed to parse LLM response as JSON: {str(e)}")
             return []
     except Exception as e:
-        logging.exception(f"LLM structuring failed: {str(e)}")
+        logger.exception(f"LLM structuring failed: {str(e)}")
         return []
 
 
