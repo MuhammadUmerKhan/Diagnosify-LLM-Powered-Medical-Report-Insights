@@ -1,5 +1,6 @@
 langchain_core
 langchain-huggingface
+sentence-transformers
 python-dotenv
 langchain-groq
 langchain
