@@ -3,7 +3,7 @@
 ## 📖 Overview
 **Diagnosify** is a user-friendly Streamlit app that makes medical reports easy to understand for everyone! 🩺 Built for a hackathon, it uses advanced AI to extract, analyze, and explain test results from reports (PDF, PNG, JPEG) 📄. With a vibrant dark theme, it offers clear insights, summaries, and a smart chatbot to answer your health questions in a supportive way 😊. Whether you’re checking test results or asking about your report, Diagnosify is here to help! 🚀
 
-![](https://c8.alamy.com/comp/2A3KRDR/clipboard-in-doctors-hand-make-notes-in-patient-card-medical-report-analysis-or-prescription-concept-vector-stock-illustration-2A3KRDR.jpg)
+![](https://img.freepik.com/premium-vector/medical-check-list-health-analysis-research-report-illustration-flat-cartoon-design_101884-86.jpg)
 
 ### 🎯 Goals
 - **Extract**: Pull text from reports using OCR 📝.
