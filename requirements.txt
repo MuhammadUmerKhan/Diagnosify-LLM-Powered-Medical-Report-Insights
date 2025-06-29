@@ -1,4 +1,5 @@
 langchain_core
+langchain-huggingface
 python-dotenv
 langchain-groq
 langchain
