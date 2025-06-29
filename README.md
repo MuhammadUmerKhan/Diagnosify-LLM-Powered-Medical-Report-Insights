@@ -1,206 +1,165 @@
-# 🩺 Diagnosify: LLM-Powered Medical Report Insights
+# 🩺 Diagnosify: AI-Powered Medical Report Insights 🌟
 
-## 📋 Overview
+## 📖 Overview
+**Diagnosify** is a user-friendly Streamlit app that makes medical reports easy to understand for everyone! 🩺 Built for a hackathon, it uses advanced AI to extract, analyze, and explain test results from reports (PDF, PNG, JPEG) 📄. With a vibrant dark theme, it offers clear insights, summaries, and a smart chatbot to answer your health questions in a supportive way 😊. Whether you’re checking test results or asking about your report, Diagnosify is here to help! 🚀
 
-The **AI Medical Report Analyzer** is a cutting-edge application designed to simplify the interpretation of medical reports for patients. Built as part of a hackathon, this project leverages advanced AI technologies to extract, categorize, and explain medical test results, delivering clear, patient-friendly insights through an intuitive web interface. The app supports multiple file formats (PDFs, PNGs, JPEGs) and provides detailed analysis, summaries, and an interactive chatbot for answering health-related queries.
-
-<img src="https://cdn.prod.website-files.com/61d48f722324914c384ef59a/65f8c1ae4a5428edab845cd2_Template%2013.webp" height="600" alt="Project Banner">
-
-### 🎯 Key Objectives
-- **Extract**: Automatically extract text from medical reports using OCR. 📄
-- **Analyze**: Categorize and explain test results with AI-driven insights. 🧠
-- **Summarize**: Provide concise summaries with risks and recommendations. 📝
-- **Interact**: Offer an AI-powered chatbot for users to ask questions about their reports. 💬
-- **Export**: Generate downloadable PDF summaries for easy sharing. 📥
+### 🎯 Goals
+- **Extract**: Pull text from reports using OCR 📝.
+- **Analyze**: Categorize and explain results with AI 🧠.
+- **Summarize**: Provide simple summaries with health tips 📋.
+- **Chat**: Answer questions about your report with a friendly AI chatbot 🤗.
+- **Share**: Download a PDF summary to share with your doctor 📥.
 
 ### ✨ Features
-- **Multi-Format Support**: Handles PDFs, PNGs, and JPEGs for versatile report uploads. 🖼️
-- **AI-Driven Insights**: Uses Groq LLM to provide detailed, patient-friendly explanations. 🤖
-- **Color-Coded Results**: Categorizes test results as Normal ✅, Borderline ⚠️, or Critical 🚨.
-- **Interactive Chatbot**: Allows users to ask questions about their medical reports in real-time. 💬
-- **PDF Export**: Generates professional PDF summaries for offline use. 📄
-- **User-Friendly UI**: Built with Streamlit for an intuitive and visually appealing interface. 🌟
+- **Multi-Format Support**: Upload PDFs, PNGs, or JPEGs 📄🖼️.
+- **AI Insights**: Groq LLM explains results in patient-friendly language 🌟.
+- **Color-Coded Results**: Shows Normal ✅, Borderline ⚠️, or Critical 🚨 statuses.
+- **RAG Chatbot**: A domain-specific chatbot answers questions based only on your uploaded PDFs, using Retrieval-Augmented Generation (RAG) for accurate, context-aware replies 💬.
+- **PDF Export**: Save a professional PDF summary of your results 📄.
+- **Cool UI**: Dark theme with neon green text, gold headings, and magenta buttons 🎨.
 
 ## 🛠️ Tech Stack
-
-- **Frontend**: Streamlit 🌐
-- **Backend**: Python 🐍
-- **AI/LLM**: Groq LLM (via `langchain-groq`) 🤖
-- **OCR**: OpenCV, Pytesseract, PyPDFLoader 📄
-- **Data Processing**: Pandas, LangChain 📊
-- **PDF Generation**: ReportLab 📥
-- **Vector Store**: FAISS for Retrieval-Augmented Generation (RAG) 🔍
-- **Environment Management**: `python-dotenv` for API key handling 🔐
+- **Frontend**: Streamlit for an interactive web interface 🌐.
+- **Backend**: Python for all processing 🐍.
+- **AI/LLM**: Groq LLM (`meta-llama/llama-4-scout-17b-16e-instruct`) via `langchain-groq` 🤖.
+- **OCR**: `PyPDF2` for PDFs, `opencv-python` & `pytesseract` (optional for images) 📝.
+- **Data**: `pandas` for tables, `langchain` for AI processing 📊.
+- **RAG**: `FAISS` and `sentence-transformers` for chatbot’s document search 🔍.
+- **PDFs**: `reportlab` for generating summaries 📄.
+- **Config**: `python-dotenv` for secure API key management 🔐.
 
 ## 📂 Project Structure
-
 ```
-AI-Medical-Report-Analyzer-Assistant/ 🌍
-│
-│
-├── logs/ 📋                   # Directory for log files (auto-generated)
-│   └── app.log 📝             # Log file for application events
-├── tmp/ ⏳                    # Temporary directory for file processing (auto-generated)
-├── src/ 🛠️                    # Core logic package
-│   ├── __init__.py 📦         # Marks src as a Python package
-│   ├── chatbot.py 💬          # Interactive chatbot for user queries
-│   ├── ocr.py 📷              # Text extraction from images/PDFs using OCR
-│   ├── nlp.py 🧩              # Structures raw text into usable data
-│   ├── categorize.py 🔍       # Categorizes test results (Normal, Borderline, Critical)
-│   ├── table_formatter.py 📊  # Formats data into tables for display
-│   ├── explain.py 📖          # Generates explanations using Groq LLM
-│   ├── summary.py 📑          # Creates summaries with risks and recommendations
-│   ├── pdf_generator.py 📄    # Generates downloadable PDF summaries
-│   └── README.md 📚           # Documentation for the src package
-│
-├── app.py 🌐                  # Main application entry point (Streamlit UI)
-│
-├── requirements.txt 📋        # List of Python dependencies
-│
-├── .env 🔐                    # Environment variables (e.g., GROQ_API_KEY)
-│
-└── README.md 📖               # Project-level documentation (this file)
+MedicalReportAnalyzer/
+├── logs/ 📋           # Logs app activity (chatbot.log)
+├── tmp/ ⏳            # Temporary files for processing
+├── src/ 🛠️           # Core logic modules
+│   ├── config.py ⚙️  # Loads API key and sets up temp folder
+│   ├── logger.py 🐞  # Sets up logging
+│   ├── ocr.py 📝     # Extracts text from PDFs (image support commented)
+│   ├── preprocess.py 🔍 # Preprocesses PDFs for text extraction
+│   ├── nlp.py 🧠     # Structures text into JSON data
+│   ├── categorize.py ✅ # Adds status (Normal, Borderline, Critical)
+│   ├── table_formatter.py 📊 # Formats results for tables
+│   ├── explain.py 📘 # Explains results in simple language
+│   ├── summary.py 📋  # Creates bullet-point summaries
+│   ├── pdf_generator.py 📄 # Generates PDF summaries
+│   ├── streaming.py 💻 # Streams chatbot responses
+│   ├── utils.py 🧰   # Helper functions (LLM, chat history)
+│   └── README.md 📚  # Src folder documentation
+├── pages/ 📑         # Streamlit pages
+│   ├── 🧐_Analyze.py 🩺 # Displays analysis results
+│   ├── 🤖_Assistant.py 💬 # RAG chatbot for questions
+├── 🏠_Home.py 🌐     # Main app entry (uploads & processes)
+├── .env 🔐           # Stores GROQ_API_KEY
+├── requirements.txt 📋 # Python dependencies
+└── README.md 📖      # This file
 ```
 
-### 📜 File Descriptions
-- **`app.py`**: The main entry point of the application, orchestrating the Streamlit UI with three tabs: Home 🏠, Analyze 🩺, and Chatbot 💬.
-- **`src/`**: Contains modular components for the backend logic. See [src/README.md](src/README.md) for detailed documentation.
-- **`requirements.txt`**: Lists all required Python packages for the project.
-- **`.env`**: Stores sensitive information like the Groq API key (not tracked in version control).
-- **`logs/app.log`**: Logs application events for debugging and monitoring.
-- **`tmp/`**: Temporary directory for storing uploaded files during processing.
+## 📑 Pages
+- **🏠 Home.py**: Upload reports (PDF, PNG, JPEG) 📤, process them with OCR and AI 🧠, and see a project overview. Results are saved for other pages to use 🔄.
+- **🧐 Analyze.py**: Shows patient info 👤, test results in a table 📊, explanations 📘, summaries 📋, and a PDF download button 📥.
+- **🤖 Assistant.py**: A friendly chatbot 🤗 that answers questions about your PDF reports, using RAG to stay accurate and relevant 💬.
+
+## 🤖 Domain-Specific RAG Chatbot
+The **Assistant** page features a domain-specific Retrieval-Augmented Generation (RAG) chatbot, designed to answer questions about your uploaded PDF medical reports 📄. Here’s how it works:
+- **PDF-Only**: Only processes PDFs from the Home page’s uploads 📤.
+- **Text Extraction**: Uses `PyPDF2` to extract text, splits it into chunks (1000 characters, 200 overlap) for efficient processing 🔍.
+- **Vector Search**: `FAISS` and `sentence-transformers` create a vector store to find relevant report sections 🗂️.
+- **Smart Answers**: The Groq LLM generates answers based only on your report’s content, avoiding guesses 🤖. It uses a custom prompt to be cheerful for normal results 🎉, hopeful for concerns 💪, and clear when data is missing 🙏.
+- **Conversational**: Remembers chat history for follow-up questions 💬, with responses streamed in real-time ⚡.
+- **Example**: Ask “What does my glucose level mean?” and get a clear, report-specific answer like “Your glucose is 140 mg/dL, which is a bit high ⚠️, suggesting possible prediabetes. Let’s discuss next steps with your doctor! 💪”
 
 ## 🚀 Getting Started
-
 ### Prerequisites
-- **Python**: Version 3.12 or higher 🐍
-- **Groq API Key**: Obtain a key from [GroqCloud](https://console.groq.com/keys) to use the LLM 🔑
-- **System Dependencies** (for OCR):
-  - On Ubuntu: `sudo apt-get install tesseract-ocr libtesseract-dev`
-  - On macOS: `brew install tesseract`
-  - On Windows: Install Tesseract OCR and add it to your PATH
+- **Python**: 3.12+ 🐍
+- **Groq API Key**: Get one from [GroqCloud](https://console.groq.com/keys) 🔑
+- **Optional (for PNG/JPEG)**: Install Tesseract OCR (`sudo apt-get install tesseract-ocr` on Ubuntu, `brew install tesseract` on macOS, or add to PATH on Windows) 🖼️
 
 ### Installation
-1. **Clone the Repository** (if applicable):
+1. **Clone the Project** (if using Git):
    ```bash
-   git clone https://github.com/MuhammadUmerKhan/SMIT-Hackathon-AI-Medical-Report-Analyzer
-   cd AI-Medical-Report-Analyzer-Assistant
+   git clone https://github.com/MuhammadUmerKhan/Diagnosify-LLM-Powered-Medical-Report-Insights
+   cd Diagnosify-LLM-Powered-Medical-Report-Insights
    ```
-2. **Set Up a Virtual Environment** (recommended):
+2. **Set Up Virtual Environment**:
    ```bash
    python -m venv env
-   source env/bin/activate  # On Windows: env\Scripts\activate
+   source env/bin/activate  # Windows: env\Scripts\activate
    ```
 3. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
-   The `requirements.txt` includes:
+   Key packages:
    ```
    streamlit==1.31.1
-   opencv-python==4.9.0
-   pytesseract==0.3.10
-   pdfplumber==0.10.4
-   reportlab==4.0.9
+   langchain==0.2.0
+   langchain-community==0.2.0
    langchain-groq==0.2.0
-   python-dotenv==1.0.0
-   pandas==2.2.0
+   langchain-text-splitters==0.2.0
    sentence-transformers==2.7.0
    faiss-cpu==1.8.0
-   langchain-community==0.2.0
-   langchain-text-splitters==0.2.0
-   langchain==0.2.0
+   pypdf2==3.0.1
+   reportlab==4.0.9
+   python-dotenv==1.0.0
+   pandas==2.2.0
+   opencv-python==4.9.0  # Optional for images
+   pytesseract==0.3.10   # Optional for images
    ```
-4. **Set Up the API Key**:
-   Create a `.env` file in the project root and add your Groq API key:
+4. **Set API Key**:
+   Create a `.env` file:
    ```bash
    echo "GROQ_API_KEY=your-api-key-here" > .env
    ```
-   Alternatively, set it as an environment variable:
-   ```bash
-   export GROQ_API_KEY="your-api-key-here"
-   ```
 
-### Running the Application
-1. **Start the Streamlit Server**:
+### Running the App
+1. **Start Streamlit**:
    ```bash
-   streamlit run app.py
+   streamlit run 🏠_Home.py
    ```
-2. **Access the App**:
-   - Open your browser and navigate to `http://localhost:8501`.
-   - You’ll see the app with three tabs: Home 🏠, Analyze 🩺, and Chatbot 💬.
-
-### Usage Guide
-1. **Upload a Medical Report**:
-   - Use the sidebar to upload a medical report (PDF, PNG, or JPEG). 📤
-   - The app supports multiple file uploads, but the Analyze tab processes only the first file.
-2. **Explore the Tabs**:
-   - **Home 🏠**: Learn about the project, its features, and tech stack.
-   - **Analyze 🩺**: View extracted patient info, test results, explanations, and a downloadable PDF summary.
-   - **Chatbot 💬**: Interact with an AI chatbot to ask questions about your report (e.g., "What does my HBA1C mean?").
-3. **Download Summary**:
-   - In the Analyze tab, click "Generate PDF Summary" to download a PDF of your report analysis. 📥
+2. **Access**: Open `http://localhost:8501` in your browser 🌐.
+3. **Use the App**:
+   - **Home 🏠**: Upload a report 📤 and wait for processing (see status in sidebar ⏳).
+   - **Analyze 🧐**: View results, explanations, and download a PDF 📥.
+   - **Assistant 🤖**: Ask questions about your PDF report (e.g., “Is my cholesterol okay?”) 💬.
 
 ## 💻 Development Notes
-
-### Key Components
-- **Streamlit UI**: The `app.py` file orchestrates the UI with three tabs, leveraging Streamlit’s `st.tabs` for navigation.
-- **Modular Backend**: The `src` package separates concerns (e.g., OCR, NLP, chatbot) for maintainability. See [src/README.md](src/README.md) for details.
-- **Chatbot with RAG**: The chatbot uses FAISS and LangChain for Retrieval-Augmented Generation, ensuring context-aware responses.
-
-### Customization
-- **Styling**: The UI is styled with custom CSS in `app.py`, using a dark theme with cyan-blue accents. Modify the CSS in the `st.markdown` block to change the look and feel. 🎨
-- **LLM Model**: The chatbot uses `meta-llama/llama-4-scout-17b-16e-instruct`. Update the model in `chatbot.py` (`configure_llm`) to experiment with other Groq models.
-- **Chunking**: The `RecursiveCharacterTextSplitter` in `chatbot.py` uses a chunk size of 1000. Adjust this for better retrieval performance if needed.
-
-### Testing
-- **Unit Tests**: Add tests for each `src` module (e.g., test `ocr.py` with sample files, test `explain.py` with mock data).
-- **End-to-End Testing**: Test the full pipeline by uploading a sample medical report and verifying the output in all tabs.
+- **UI Style**: Dark theme with neon green text, gold headings, and magenta buttons. Edit CSS in each page’s `st.markdown` for customization 🎨.
+- **RAG Tuning**: Adjust `chunk_size` (1000) or `search_kwargs` (`k=2`, `fetch_k=4`) in `🤖_Assistant.py` for better chatbot performance 🔍.
+- **Image Support**: Uncomment code in `src/ocr.py` and `src/preprocess.py` for PNG/JPEG processing (requires `opencv-python`, `pytesseract`) 🖼️.
+- **Logs**: Check `logs/chatbot.log` for debugging 🐞.
+- **Testing**: Add unit tests for `src/` modules and end-to-end tests with sample reports ✅.
 
 ## 🐞 Known Issues
-
-- **Chatbot Input Positioning**: Ensure the `st.chat_input` in `chatbot.py` is fixed at the bottom (addressed in recent updates).
-- **Pydantic Compatibility**: If using Pydantic with `langchain`, ensure version `1.10.13` to avoid serialization errors:
-  ```bash
-  pip install pydantic==1.10.13
-  ```
-- **Temporary Files**: The `tmp/` directory stores temporary files during processing. Ensure cleanup is robust to avoid disk space issues.
+- **Image Support**: PNG/JPEG processing is disabled by default (commented in `ocr.py`, `preprocess.py`). Enable it after installing Tesseract and OpenCV 🖼️.
+- **Pydantic**: Use `pydantic==1.10.13` if `langchain` raises serialization errors:
+   ```bash
+   pip install pydantic==1.10.13
+   ```
+- **Temporary Files**: The `tmp/` folder is cleaned after processing, but ensure disk space is monitored ⏳.
 
 ## 🤝 Contributing
+Want to help make Diagnosify better? 🙌
+1. Fork the repo.
+2. Create a branch: `git checkout -b feature/your-feature`.
+3. Commit changes: `git commit -m "Add your feature"`.
+4. Push: `git push origin feature/your-feature`.
+5. Submit a pull request with details.
 
-Contributions are welcome! To contribute:
-1. Fork the repository.
-2. Create a new branch for your feature or bugfix:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add your feature description"
-   ```
-4. Push to your branch:
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-5. Submit a pull request with a detailed description of your changes.
+**Ideas**:
+- Support more file formats (e.g., DOCX) 📜.
+- Improve RAG with advanced retrieval techniques 🔍.
+- Add accessibility features (e.g., screen reader support) ♿.
+- Write tests for reliability ✅.
 
-## 🎯 Live Demo:
-- [Click here](https://smit-hackathon-ai-medical-report-analyzer.streamlit.app/)
-
-### Contribution Ideas
-- Add support for more file formats (e.g., DOCX). 📜
-- Enhance the chatbot with more advanced RAG techniques. 🔍
-- Improve UI accessibility (e.g., keyboard navigation, screen reader support). ♿
-- Add unit tests for better code reliability. ✅
+## 🌐 Live Demo
+Check it out: [Diagnosify Demo](https://smit-hackathon-ai-medical-report-analyzer.streamlit.app/) 🚀
 
 ## 📧 Contact
-
-For questions, feedback, or collaboration, reach out to Muhammad Umer Khan at [muhammadumerk546@gmail.com].
+Questions or ideas? Reach out to **Muhammad Umer Khan** at [muhammadumerk546@gmail.com] or [LinkedIn](https://www.linkedin.com/in/muhammad-umer-khan-61729b260/) 🙋‍♂️.
 
 ## 🙌 Acknowledgments
-
-- **Groq**: For providing the LLM API that powers the AI explanations and chatbot. 🌟
-- **Streamlit**: For the amazing framework that made the UI development seamless. 🌐
-- **Hackathon Organizers**: For the opportunity to build this project! 🏆
-
----
+- **Groq**: For the powerful LLM API 🤖.
+- **Streamlit**: For an awesome UI framework 🌐.
+- **Hackathon Team**: For inspiring this project! 🏆
