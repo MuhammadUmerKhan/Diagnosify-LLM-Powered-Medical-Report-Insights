@@ -1,0 +1,11 @@
+● Diagnosify: LLM-Powered Medical Report Insights                                                               Hackathon Project | 2025
+    • Challenge: Rapidly build a scalable AI system that extracts, summarizes, and explains medical findings from
+    unstructured documents.
+• Action:
+    • Combined OCR, LLMs, and prompt engineering to process PDFs/images into structured medical insights.
+    • Built a modular ML pipeline for cleaning, structuring, and summarizing health reports.
+    • Designed a Generative RAG chatbot for conversational querying over uploaded medical documents.
+    • Generated downloadable PDF reports with disease tables, explanations, and recommended next steps.
+• Result:
+    • Delivered a full-stack medical AI product in under 12 hours with LLM-driven insight generation and RAG-based Q&A.
+    • Showcased real-world deployment of OCR, NLP, and explainable AI. [Live Demo](https://smit-hackathon-ai-medical-report-analyzer.streamlit.app/)
