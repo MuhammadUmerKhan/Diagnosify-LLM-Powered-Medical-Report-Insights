@@ -112,7 +112,9 @@ The **Assistant** page features a domain-specific Retrieval-Augmented Generation
 4. **Set API Key**:
    Create a `.env` file:
    ```bash
-   echo "GROQ_API_KEY=your-api-key-here" > .env
+   GROQ_API_KEY=your-api-key-here
+   MODEL_NAME=meta-llama/llama-4-scout-17b-16e-instruct
+   MODEL_TEMPERATURE=0.3
    ```
 
 ### Running the App
