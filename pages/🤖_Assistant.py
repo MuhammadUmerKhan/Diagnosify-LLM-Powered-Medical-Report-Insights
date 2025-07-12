@@ -1,4 +1,5 @@
-import streamlit as st, os
+import streamlit as st
+import os
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_community.document_loaders import PyPDFLoader
@@ -9,6 +10,7 @@ from scripts.utils import enable_chat_history, display_msg, print_qa, configure_
 from scripts.config import get_logger
 from scripts.streaming import StreamHandler
 from scripts.config import TEMP_DIR
+from scripts.ragas_evaluator import evaluate_and_store
 
 logger = get_logger(__name__)
 
@@ -78,10 +80,25 @@ class MedicalChatbot:
 
         st.sidebar.title("🤖 Chatbot Page Overview")
         st.sidebar.markdown(
-           "<p style='color:#00ff99'>This page allows you to ask questions about your uploaded medical reports (PDFs only). The AI chatbot uses Retrieval-Augmented Generation (RAG) to provide accurate, context-aware answers based on the report content, with a conversational history for follow-up questions.</p>",
+            "<p style='color:#00ff99'>This page allows you to ask questions about your uploaded medical reports (PDFs only). The AI chatbot uses Retrieval-Augmented Generation (RAG) to provide accurate, context-aware answers based on the report content, with a conversational history for follow-up questions.</p>",
             unsafe_allow_html=True
         )
-        
+
+        # Sidebar for RAGAS evaluation
+        st.sidebar.subheader("RAGAS Evaluation")
+        enable_ragas = st.sidebar.checkbox("Enable RAGAS Evaluation", value=False)
+        if enable_ragas:
+            openai_api_key = st.sidebar.text_input("Enter OpenAI API Key", type="password")
+            if openai_api_key:
+                openai_api_key = openai_api_key.strip()  # Remove leading/trailing whitespace
+                if openai_api_key.startswith("sk-"):
+                    os.environ["OPENAI_API_KEY"] = openai_api_key
+                    logger.info("OpenAI API key set successfully.")
+                else:
+                    st.sidebar.error("Invalid API key format. It should start with 'sk-'.")
+            else:
+                st.sidebar.warning("Please provide a valid OpenAI API key to enable RAGAS evaluation.")
+
         if not self.uploaded_files:
             st.error("❌ Upload a PDF report on the Home page first.")
             return
@@ -97,9 +114,24 @@ class MedicalChatbot:
             with st.chat_message("assistant", avatar="🤖"):
                 st_cb = StreamHandler(st.empty())
                 result = qa_chain.invoke({"question": user_query}, {"callbacks": [st_cb]})
+                retrieved_docs = result.get("source_documents", [])
+                retrieved_contexts = [doc.page_content for doc in retrieved_docs]
+                combined_context = " ".join(retrieved_contexts) if retrieved_contexts else ""
                 response = result["answer"]
                 st.write(response)
                 print_qa(MedicalChatbot, user_query, response)
+
+                # RAGAS evaluation and storage
+                if enable_ragas and "OPENAI_API_KEY" in os.environ:
+                    try:
+                        evaluate_and_store(
+                            question=user_query,
+                            generated_answer=response,
+                            context=combined_context,
+                        )
+                    except Exception as e:
+                        logger.error(f"Error during RAGAS evaluation: {e}")
+                        st.error("❌ Failed to evaluate and store metrics.")
 
 if __name__ == "__main__":
     MedicalChatbot().main()
