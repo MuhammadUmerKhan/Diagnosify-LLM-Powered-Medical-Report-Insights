@@ -1,24 +1,14 @@
-import streamlit as st
 from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, ListFlowable, ListItem
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, ListFlowable, ListItem
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib import colors
 from io import BytesIO
 from typing import List, Dict
-from scripts.utils import get_default_table_style
 from scripts.config import get_logger
 
 logger = get_logger(__name__)
 
-@st.cache_data(show_spinner=False)
 def generate_pdf_summary(results: List[Dict], explanations: str, summary_bullets: str, output_path: str = None) -> bytes:
-    """Generate a PDF summary of medical test results."""
-    if not isinstance(results, list) or not results:
-        logger.error("Invalid input: results must be a non-empty list of dictionaries")
-        raise ValueError("Invalid results input")
-    if not isinstance(explanations, str) or not isinstance(summary_bullets, str):
-        logger.error("Invalid input: explanations and summary_bullets must be strings")
-        raise ValueError("Invalid explanations or summary_bullets input")
     logger.info("Generating improved PDF summary")
     buffer = BytesIO()
     try:
@@ -61,7 +51,14 @@ def generate_pdf_summary(results: List[Dict], explanations: str, summary_bullets
                     res.get("status", "Unknown")
                 ])
             table = Table(data, hAlign='LEFT', colWidths=[130, 70, 70, 130, 80])
-            table.setStyle(get_default_table_style())
+            table.setStyle(TableStyle([
+                ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
+                ("TEXTCOLOR", (0, 0), (-1, 0), colors.black),
+                ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("BOTTOMPADDING", (0, 0), (-1, 0), 8),
+                ("GRID", (0, 0), (-1, -1), 0.5, colors.grey),
+            ]))
             story.append(table)
             story.append(Spacer(1, 12))
 
