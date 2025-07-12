@@ -19,9 +19,6 @@ try:
 
     # Load API Key & Model Name
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-    if not GROQ_API_KEY:
-        logger.warning("⚠️ GROQ_API_KEY is missing. Some features may not work.")
-
     MODEL_NAME: str = os.getenv("MODEL_NAME")
     TEMPERATURE: float = os.getenv("MODEL_TEMPERATURE")
 
