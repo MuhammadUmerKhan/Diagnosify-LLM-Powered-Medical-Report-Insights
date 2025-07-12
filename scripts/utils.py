@@ -9,6 +9,11 @@ import scripts.config as CONFIG
 
 logger = CONFIG.get_logger(__name__)
 
+# Check if API key is available
+if not CONFIG.GROQ_API_KEY:
+    st.error("❌ Missing API Token!")
+    st.stop()  # Stop execution if API token is missing
+
 # Singleton LLM instance
 _llm_instance = None
 
