@@ -1,109 +1,25 @@
-import streamlit as st
-import os
-import tempfile
-import pandas as pd
-from src.ocr import extract_text
-from src.nlp import structure_data
-from src.categorize import categorize_results
-from src.table_formatter import format_results_for_table
-from src.explain import explain_results_batch
-from src.summary import generate_summary_bullet_points
-from src.pdf_generator import generate_pdf_summary
-from src.utils import configure_llm
-from src.logger import get_logger
+import streamlit as st, os, tempfile
+from scripts.ocr import extract_text
+from scripts.processing import  \
+        (structure_data, categorize_results, explain_results_batch, generate_summary_bullet_points)
+from scripts.utils import configure_llm, apply_custom_css
+from scripts.config import get_logger
 
 logger = get_logger(__name__)
 
 st.set_page_config(page_title="Medical Report Analyzer", page_icon="🩺", layout="wide")
 
-# Custom CSS
-st.markdown("""
-<style>
-.stApp { 
-    color: #00ff99; 
-    background: #000000; 
-    font-family: 'Arial', sans-serif;
-}
-.card { 
-    background: linear-gradient(135deg, #1c2526, #2e2e2e); 
-    border-radius: 15px; 
-    padding: 20px; 
-    margin-bottom: 20px; 
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7); 
-    border: 2px solid #00e5ff;
-}
-.stButton>button { 
-    background: #ff00ff; 
-    color: #ffd700; 
-    border-radius: 10px; 
-    padding: 12px 24px; 
-    border: none; 
-    box-shadow: 0 0 15px rgba(255, 0, 255, 0.8); 
-    font-size: 16px; 
-    font-weight: bold;
-}
-.stButton>button:hover { 
-    background: #cc00cc; 
-    box-shadow: 0 0 25px rgba(255, 0, 255, 1); 
-    transform: scale(1.1); 
-    color: #ffffff;
-}
-h1, h2, h3 { 
-    color: #ffd700; 
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-}
-.warning { color: #ff5252; font-weight: bold; }
-.critical { color: #ff5252; font-weight: bold; }
-.borderline { color: #ffca28; font-weight: bold; }
-.normal { color: #00ff99; font-weight: bold; }
-.stDataFrame { background: #1c2526; border-radius: 10px; padding: 10px; }
-.dataframe th { background: #ff00ff !important; color: #ffd700 !important; font-weight: bold !important; }
-.dataframe tr:nth-child(even) { background: #2e2e2e; }
-.dataframe tr:nth-child(odd) { background: #1c2526; }
-.dataframe td { color: #00ff99; }
-.bullet-point { 
-    margin-left: 20px; 
-    color: #00e5ff; 
-    font-size: 16px; 
-    line-height: 1.6;
-}
-.chat-message { 
-    padding: 10px; 
-    margin-bottom: 10px; 
-    border-radius: 10px;
-}
-.chat-message.user { background: #ff00ff; color: #ffd700; }
-.chat-message.bot { background: #2e2e2e; color: #00ff99; }
-.stSidebar { 
-    background: #1c2526; 
-    color: #00e5ff;
-}
-.stSidebar h3 { color: #ffd700; }
-.stSidebar p { color: #00ff99; }
-.stSelectbox label { color: #ffd700; }
-.stSelectbox div[data-baseweb="select"] { background: #2e2e2e; color: #00ff99; border-radius: 8px; }
-</style>
-""", unsafe_allow_html=True)
-
-# Sidebar content
-# st.sidebar.title("📋 About the Project 🌐")
-# st.sidebar.markdown("""
-# <p style='color:#00ff99'><b>AI Medical Report Analyzer</b> 🎯</p>
-# <p style='color:#00e5ff'>Crafted by <b><a href="https://www.linkedin.com/in/muhammad-umer-khan-61729b260/">Muhammad Umer Khan</a></b> 💻<br>
-# This app uses AI to extract, categorize, and explain medical test results. ✨<br>
-# <b>Powered by Groq LLM and Streamlit</b> ⚡</p>
-# """, unsafe_allow_html=True)
-# st.sidebar.markdown("<hr style='border-color:#00e5ff'>", unsafe_allow_html=True)
+apply_custom_css()
 
 st.sidebar.subheader("🏠 Home Page Overview")
 st.sidebar.markdown("""
-<p style='color:#00ff99'>This page processes medical reports (PDF, PNG, JPEG) using OCR and NLP. View results on the Analyze tab or ask questions on the Assistant tab.</p>
+<p style='color:#00ff99'>This page analyzes medical reports. Check results on the Analyze tab or ask questions on the Assistant tab.</p>
 """, unsafe_allow_html=True)
 
-st.sidebar.subheader("📤 Upload Medical Reports")
+st.sidebar.subheader("📤 Upload Medical Reports 🌡️")
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
-uploaded_files = st.sidebar.file_uploader("📤 Upload Medical Report 🌡️", type=["pdf", "png", "jpg", "jpeg"], accept_multiple_files=True, key="global_uploader")
+uploaded_files = st.sidebar.file_uploader('', type=["pdf"], accept_multiple_files=True, key="global_uploader")
 if uploaded_files:
     st.session_state.uploaded_files = uploaded_files
     # Clear previous analysis results when new files are uploaded
@@ -202,11 +118,11 @@ if uploaded_files:
 
             os.unlink(tmp_file_path)
             logger.info(f"Temporary file deleted: {tmp_file_path}")
-            status_placeholder.markdown("<p style='color:#00ff99'>✅ Report processed successfully! 🎉 Navigate to the Analyze tab to view results or the Assistant tab to ask questions.</p>", unsafe_allow_html=True)
+            status_placeholder.markdown("<p style='color:#00ff99'>✅ Report processed successfully!</p>", unsafe_allow_html=True)
             st.info("✅ Analysis complete! Please navigate to the Analyze tab to view detailed results or the Assistant tab to ask questions about your report.")
         except Exception as e:
             st.markdown(f'<p class="warning">❌ Error: {str(e)}</p>', unsafe_allow_html=True)
             logger.error(f"Error processing file: {str(e)}")
             status_placeholder.markdown("<p style='color:#ff5252'>❌ Processing failed! ⚠️</p>", unsafe_allow_html=True)
 else:
-    st.info("📢 Please upload a medical report using the sidebar to start analyzing! 🚀")
+    st.sidebar.info("📢 Please upload a medical report using the sidebar to start analyzing! 🚀")
