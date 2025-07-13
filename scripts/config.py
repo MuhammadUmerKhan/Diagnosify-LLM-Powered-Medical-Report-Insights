@@ -1,5 +1,5 @@
-import dotenv, os
-import logging
+import dotenv, os, logging
+from urllib.parse import quote_plus
 
 # Configure Logging
 logging.basicConfig(
@@ -33,3 +33,25 @@ try:
 except Exception as e:
     logger.error(f"❌ Error loading configuration: {e}")
     raise
+
+def get_mongo_uri():
+    """Construct and return MongoDB Atlas URI from environment variables."""
+    try:
+        DB_NAME = os.getenv("MONGO_DB", "diagnosify")
+        MONGO_USER = os.getenv("MONGO_USER")
+        MONGO_PASSWORD = os.getenv("MONGO_PASSWORD")
+        MONGO_CLUSTER = os.getenv("MONGO_CLUSTER")
+
+        if not MONGO_USER or not MONGO_PASSWORD or not MONGO_CLUSTER:
+            raise ValueError("❌ MongoDB credentials are missing! Check .env file.")
+
+        MONGO_PASSWORD = quote_plus(MONGO_PASSWORD)
+        MONGO_URI = (
+            f"mongodb+srv://{MONGO_USER}:{MONGO_PASSWORD}@{MONGO_CLUSTER}/{DB_NAME}"
+            "?retryWrites=true&w=majority&appName=Cluster0"
+        )
+        logger.info("✅ MongoDB URI constructed successfully.")
+        return MONGO_URI
+    except Exception as e:
+        logger.error(f"❌ Error constructing MongoDB URI: {e}")
+        raise

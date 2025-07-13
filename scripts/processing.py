@@ -10,18 +10,18 @@ def process_medical_report(text: str) -> tuple[List[Dict], str, str]:
     Process medical report text through structuring, categorization, explanation, and summary.
     Returns structured results, explanations, and summary bullet points.
     """
-    logger.info("Processing medical report")
+    logger.info("♻ Processing medical report")
 
     # Step 1: Structure data
     results = structure_data(text)
     if not results:
-        logger.error("Failed to structure data")
+        logger.error("❌ Failed to structure data")
         return [], "Unable to process report due to structuring error.", ""
 
     # Step 2: Categorize results
     categorized = categorize_results(results)
     if not categorized:
-        logger.warning("No categorized results returned, using original results")
+        logger.warning("⚠️ No categorized results returned, using original results")
         categorized = results
 
     # Step 3: Format for table
@@ -30,21 +30,21 @@ def process_medical_report(text: str) -> tuple[List[Dict], str, str]:
     # Step 4: Generate explanations
     explanations = explain_results_batch(table_results)
     if not explanations or "error" in explanations.lower():
-        logger.error("Failed to generate explanations")
+        logger.error("❌ Failed to generate explanations")
         explanations = "Unable to generate explanations due to an error."
 
     # Step 5: Generate summary
     summary_bullets = generate_summary_bullet_points(explanations)
     if not summary_bullets or "error" in summary_bullets.lower():
-        logger.error("Failed to generate summary")
+        logger.error("❌ Failed to generate summary")
         summary_bullets = "Unable to generate summary due to an error."
 
-    logger.info("Medical report processing completed")
+    logger.info("✅ Medical report processing completed")
     return table_results, explanations, summary_bullets
 
 def structure_data(text: str) -> List[Dict]:
     """Extract structured data from medical report text using LLM."""
-    logger.info("Extracting structured data")
+    logger.info("♻ Extracting structured data")
     try:
         # messages = [
         #     SystemMessage(content="You are a medical data extraction assistant."),
@@ -72,17 +72,17 @@ def structure_data(text: str) -> List[Dict]:
         response = configure_llm().invoke(messages)
         results = json.loads(response.content.strip())
         if not isinstance(results, list):
-            logger.warning("LLM returned non-list response")
+            logger.warning("⚠️ LLM returned non-list response")
             return []
-        logger.info(f"Extracted {len(results)} results")
+        logger.info(f"✅ Extracted {len(results)} results")
         return results
     except Exception as e:
-        logger.error(f"Structuring failed: {str(e)}")
+        logger.error(f"❌ Structuring failed: {str(e)}")
         return []
 
 def categorize_results(results: List[Dict]) -> List[Dict]:
     """Categorize medical report data, adding 'status' field where applicable."""
-    logger.info("Categorizing results")
+    logger.info("♻ Categorizing results")
     try:
         results_text = json.dumps(results, indent=2)
         # messages = [
@@ -115,17 +115,17 @@ def categorize_results(results: List[Dict]) -> List[Dict]:
         response = configure_llm().invoke(messages)
         categorized = json.loads(response.content.strip())
         if not isinstance(categorized, list):
-            logger.warning("Non-list response for categorization")
+            logger.warning("⚠️ Non-list response for categorization")
             return results
-        logger.info(f"Categorized {len(categorized)} results")
+        logger.info(f"✅ Categorized {len(categorized)} results")
         return categorized
     except Exception as e:
-        logger.error(f"Categorization failed: {str(e)}")
+        logger.error(f"❌ Categorization failed: {str(e)}")
         return results
 
 def format_results_for_table(results: List[Dict]) -> List[Dict]:
     """Format test results for table display."""
-    logger.info("Formatting results for table")
+    logger.info("♻ Formatting results for table")
     try:
         input_data = json.dumps(results, indent=2)
         # messages = [
@@ -159,17 +159,17 @@ def format_results_for_table(results: List[Dict]) -> List[Dict]:
         response = configure_llm().invoke(messages)
         parsed = json.loads(response.content.strip())
         if isinstance(parsed, list) and all(isinstance(row, dict) for row in parsed):
-            logger.info(f"Formatted {len(parsed)} rows for table")
+            logger.info(f"✅ Formatted {len(parsed)} rows for table")
             return parsed
-        logger.warning("Invalid table format response")
+        logger.warning("⚠️ Invalid table format response")
         return []
     except Exception as e:
-        logger.error(f"Table formatting failed: {str(e)}")
+        logger.error(f"❌ Table formatting failed: {str(e)}")
         return []
 
 def explain_results_batch(results: List[Dict]) -> str:
     """Generate patient-friendly explanations for test results."""
-    logger.info("Generating explanations")
+    logger.info("♻ Generating explanations")
     try:
         input_data = json.dumps(results, indent=2)
         # messages = [
@@ -209,15 +209,15 @@ def explain_results_batch(results: List[Dict]) -> str:
                                      """, input_data=input_data)
         response = configure_llm().invoke(messages)
         explanation = response.content.strip()
-        logger.info("Explanations generated")
+        logger.info("✅ Explanations generated")
         return explanation
     except Exception as e:
-        logger.error(f"Explanation generation failed: {str(e)}")
+        logger.error(f"❌ Explanation generation failed: {str(e)}")
         return "Unable to generate explanations due to an error."
 
 def generate_summary_bullet_points(explanations: str) -> str:
     """Generate summary bullet points from explanations."""
-    logger.info("Generating summary bullet points")
+    logger.info("♻ Generating summary bullet points")
     try:
         # messages = [
         #     SystemMessage(content="You are a compassionate medical assistant."),
@@ -250,5 +250,5 @@ def generate_summary_bullet_points(explanations: str) -> str:
         response = configure_llm().invoke(messages)
         return response.content.strip()
     except Exception as e:
-        logger.error(f"Summary generation failed: {str(e)}")
+        logger.error(f"❌ Summary generation failed: {str(e)}")
         return "Unable to generate summary due to an error."

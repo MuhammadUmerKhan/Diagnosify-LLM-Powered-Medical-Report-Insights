@@ -9,7 +9,7 @@ from scripts.config import get_logger
 logger = get_logger(__name__)
 
 def generate_pdf_summary(results: List[Dict], explanations: str, summary_bullets: str, output_path: str = None) -> bytes:
-    logger.info("Generating improved PDF summary")
+    logger.info("♻ Generating improved PDF summary")
     buffer = BytesIO()
     try:
         doc = SimpleDocTemplate(buffer, pagesize=letter)
@@ -87,15 +87,15 @@ def generate_pdf_summary(results: List[Dict], explanations: str, summary_bullets
                         story.append(ListFlowable(items, bulletType='bullet'))
                         story.append(Spacer(1, 6))
             except Exception as e:
-                logger.warning(f"Failed to parse summary bullet points: {str(e)}. Falling back to plain text.")
+                logger.warning(f"⚠️ Failed to parse summary bullet points: {str(e)}. Falling back to plain text.")
                 story.append(Paragraph(summary_bullets.replace("\n", " "), styles["Normal"]))
 
         doc.build(story)
         pdf_bytes = buffer.getvalue()
         buffer.close()
-        logger.info("Improved PDF summary generated successfully")
+        logger.info("✅ Improved PDF summary generated successfully")
         return pdf_bytes
 
     except Exception as e:
-        logger.error(f"Error generating PDF: {str(e)}")
+        logger.error(f"❌ Error generating PDF: {str(e)}")
         raise

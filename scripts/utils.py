@@ -22,7 +22,7 @@ def configure_llm():
     """Configures and caches a singleton LLM (ChatGroq) instance."""
     global _llm_instance
     if _llm_instance is None:
-        logger.info("Initializing singleton ChatGroq LLM instance")
+        logger.info("⟳ Initializing singleton ChatGroq LLM instance")
         _llm_instance = ChatGroq(
             model_name=CONFIG.MODEL_NAME,
             temperature=CONFIG.TEMPERATURE,
