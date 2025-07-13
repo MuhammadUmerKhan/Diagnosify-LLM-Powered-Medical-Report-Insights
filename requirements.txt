@@ -16,3 +16,4 @@ faiss-cpu
 opencv-python
 PyPDF2
 ragas
+pymongo
