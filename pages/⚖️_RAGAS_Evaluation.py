@@ -33,6 +33,7 @@ def display_ragas_evaluation():
 
         # Create DataFrame from chat data
         df = pd.DataFrame([{
+            "Model Used": chat["model_used"],
             "Question": chat["question"],
             "Answer": chat["generated_answer"],
             "Context": chat["retrieved_context"],
