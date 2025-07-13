@@ -84,6 +84,7 @@ The **Assistant** page features a domain-specific Retrieval-Augmented Generation
 ### 📊 What We Evaluate with RAGAS
 - **Faithfulness Score**: Measures how well the chatbot’s answers align with the report’s context 📏. A score of 1.0 means perfect accuracy, while lower scores indicate deviations or hallucinations.
 - **Why We Evaluate**: Ensures the chatbot provides reliable, report-based answers rather than fabricating information 🛡️. This builds trust and supports informed health decisions 🤝.
+- **🎯 Why Faithfulness Only?**: Diagnosify works with real medical PDFs provided by the user. Since these documents are user-specific and vary greatly, we do not have predefined ground-truth answers to compare against — a requirement for other metrics like answer_correctness or answer_relevancy.
 
 ## 🚀 Getting Started
 ### Prerequisites
