@@ -1,24 +1,27 @@
 MedicalReportAnalyzer/
-├── logs/ 📋           # Logs app activity (chatbot.log)
-├── tmp/ ⏳            # Temporary files for processing
-├── src/ 🛠️           # Core logic modules
-│   ├── config.py ⚙️  # Loads API key and sets up temp folder
-│   ├── logger.py 🐞  # Sets up logging
-│   ├── ocr.py 📝     # Extracts text from PDFs (image support commented)
+├── logs/ 📋           # Stores log files (e.g., chatbot.log) for debugging 🐞
+│   └── chatbot.log    # Logs app activity and errors
+├── tmp/ ⏳            # Temporary storage for uploaded files during processing
+├── scripts/ 🛠️           # Core logic and utility modules
+│   ├── config.py ⚙️  # Loads API keys, sets temp folder, and MongoDB URI
+│   ├── logger.py 🐞  # Configures logging to logs/chatbot.log
+│   ├── ocr.py 📝     # Extracts text from PDFs using PyPDF2 (image support commented)
 │   ├── preprocess.py 🔍 # Preprocesses PDFs for text extraction
-│   ├── nlp.py 🧠     # Structures text into JSON data
-│   ├── categorize.py ✅ # Adds status (Normal, Borderline, Critical)
-│   ├── table_formatter.py 📊 # Formats results for tables
-│   ├── explain.py 📘 # Explains results in simple language
-│   ├── summary.py 📋  # Creates bullet-point summaries
-│   ├── pdf_generator.py 📄 # Generates PDF summaries
-│   ├── streaming.py 💻 # Streams chatbot responses
-│   ├── utils.py 🧰   # Helper functions (LLM, chat history)
-│   └── README.md 📚  # Src folder documentation
-├── pages/ 📑         # Streamlit pages
-│   ├── 🧐_Analyze.py 🩺 # Displays analysis results
-│   ├── 🤖_Assistant.py 💬 # RAG chatbot for questions
-├── 🏠_Home.py 🌐     # Main app entry (uploads & processes)
-├── .env 🔐           # Stores GROQ_API_KEY
-├── requirements.txt 📋 # Python dependencies
-└── README.md 📖      # This file
+│   ├── nlp.py 🧠     # Structures extracted text into JSON data
+│   ├── categorize.py ✅ # Categorizes results (Normal, Borderline, Critical)
+│   ├── table_formatter.py 📊 # Formats results for display in tables
+│   ├── explain.py 📘 # Generates simple explanations for medical terms
+│   ├── summary.py 📋  # Creates bullet-point summaries and recommendations
+│   ├── pdf_generator.py 📄 # Generates downloadable PDF summaries
+│   ├── streaming.py 💻 # Streams real-time chatbot responses
+│   ├── utils.py 🧰   # Helper functions (LLM setup, chat history, CSS)
+│   ├── ragas_evaluator.py 📈 # Evaluates chatbot accuracy with RAGAS and stores chat history in MongoDB
+│   └── README.md 📚  # Documentation for the src/ folder
+├── pages/ 📑         # Streamlit multi-page interface
+│   ├── 🧐_Analyze.py 🩺 # Displays analyzed report results and PDF download
+│   ├── 🤖_Assistant.py 💬 # RAG chatbot for interactive report questions
+│   └── ⚖️_RAGAS_Evaluation.py 📊 # Shows chat history and RAGAS faithfulness metrics
+├── 🏠_Home.py 🌐     # Main entry point for uploading and processing reports
+├── .env 🔐           # Environment variables (API keys, MongoDB credentials)
+├── requirements.txt 📋 # List of Python dependencies
+└── README.md 📖      # Main project documentation (this file)
