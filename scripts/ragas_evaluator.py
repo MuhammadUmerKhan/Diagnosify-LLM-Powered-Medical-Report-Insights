@@ -4,7 +4,7 @@ from datasets import Dataset
 from pymongo import MongoClient
 from datetime import datetime
 from typing import List, Dict, Optional
-from scripts.config import get_logger, get_mongo_uri
+from scripts.config import get_logger, get_mongo_uri, MODEL_NAME
 
 # Logger setup
 logger = get_logger(__name__)
@@ -52,6 +52,7 @@ def store_chat_metrics(
         collection = db[collection_name]
         document = {
             "user_id": user_id,
+            "model_used": MODEL_NAME,
             "question": question,
             "generated_answer": generated_answer,
             "retrieved_context": context,
