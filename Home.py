@@ -117,12 +117,12 @@ if uploaded_files:
             st.session_state.categorized_data = categorized_data
 
             os.unlink(tmp_file_path)
-            logger.info(f"Temporary file deleted: {tmp_file_path}")
+            logger.info(f"✅ Temporary file deleted: {tmp_file_path}")
             status_placeholder.markdown("<p style='color:#00ff99'>✅ Report processed successfully!</p>", unsafe_allow_html=True)
             st.info("✅ Analysis complete! Please navigate to the Analyze tab to view detailed results or the Assistant tab to ask questions about your report.")
         except Exception as e:
             st.markdown(f'<p class="warning">❌ Error: {str(e)}</p>', unsafe_allow_html=True)
-            logger.error(f"Error processing file: {str(e)}")
+            logger.error(f"❌ Error processing file: {str(e)}")
             status_placeholder.markdown("<p style='color:#ff5252'>❌ Processing failed! ⚠️</p>", unsafe_allow_html=True)
 else:
     st.sidebar.info("📢 Please upload a medical report using the sidebar to start analyzing! 🚀")
