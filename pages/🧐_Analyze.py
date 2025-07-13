@@ -108,7 +108,7 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
     except Exception as e:
         st.error(f"❌ Error displaying results: {str(e)}")
-        logger.error(f"Error displaying results: {str(e)}")
+        logger.error(f"❌ Error displaying results: {str(e)}")
 
 if __name__ == "__main__":
     main()
