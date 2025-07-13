@@ -1,5 +1,6 @@
 import streamlit as st
 import os
+import uuid
 from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from langchain_community.document_loaders import PyPDFLoader
@@ -14,7 +15,7 @@ from scripts.ragas_evaluator import evaluate_and_store
 
 logger = get_logger(__name__)
 
-st.set_page_config(page_title="Medical Report Analyzer", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="Medical Report Chatbot", page_icon="🩺", layout="wide")
 apply_custom_css()
 
 class MedicalChatbot:
@@ -23,6 +24,10 @@ class MedicalChatbot:
         self.llm = configure_llm()
         self.embedding_model = configure_embedding_model()
         self.uploaded_files = [f for f in st.session_state.get("uploaded_files", []) if f.name.lower().endswith('.pdf')]
+        # Initialize user_id if not already set
+        if "user_id" not in st.session_state:
+            st.session_state.user_id = str(uuid.uuid4())
+            logger.info(f"✅ Assigned new user_id: {st.session_state.user_id}")
 
     def save_file(self, file):
         """Save uploaded file temporarily."""
@@ -41,7 +46,7 @@ class MedicalChatbot:
                 loader = PyPDFLoader(file_path)
                 docs.extend(loader.load())
                 os.unlink(file_path)
-                logger.info(f"Removed temporary file: {file_path}")
+                logger.info(f"✅ Removed temporary file: {file_path}")
 
             if not docs:
                 raise ValueError("No valid PDF documents extracted.")
@@ -54,10 +59,8 @@ class MedicalChatbot:
             system_prompt = PromptTemplate(
                 input_variables=["context", "question", "chat_history"],
                 template=(
-                    "You are a friendly Medical Report Assistant 🤗, helping patients understand their reports with clarity. "
-                    "Answer based solely on the provided report, using simple language and a supportive tone. "
-                    "For normal results, use a cheerful tone 🎉. For concerning results, be gentle and encouraging 💪. "
-                    "If information is missing, note it kindly 🙏. Use emojis for engagement.\n\n"
+                    "You are a kind Medical Assistant 🤗. Explain the report in clear, simple terms based only on the context. "
+                    "Use 🎉 for normal findings and 💪 for concerns. If data is missing, respond gently 🙏. Use emojis for empathy.\n\n"
                     "Context: {context}\nChat History: {chat_history}\nQuestion: {question}\nAnswer:"
                 )
             )
@@ -69,18 +72,18 @@ class MedicalChatbot:
                 combine_docs_chain_kwargs={"prompt": system_prompt}
             )
         except Exception as e:
-            logger.error(f"Error setting up QA chain: {e}")
+            logger.error(f"❌ Error setting up QA chain: {e}")
             return None
 
     @enable_chat_history
     def main(self):
-        """Main function for the Assistant page."""
+        """Main function for the chat page."""
         st.header("💬 Medical Report Chatbot 🌡️")
         st.markdown("<p style='color:#00ff99'>Ask questions about your medical report!</p>", unsafe_allow_html=True)
 
-        st.sidebar.title("🤖 Chatbot Page Overview")
+        st.sidebar.title("🤖 Medical Report Analyzer")
         st.sidebar.markdown(
-            "<p style='color:#00ff99'>This page allows you to ask questions about your uploaded medical reports (PDFs only). The AI chatbot uses Retrieval-Augmented Generation (RAG) to provide accurate, context-aware answers based on the report content, with a conversational history for follow-up questions.</p>",
+            "<p style='color:#00ff99'>Use this page to chat with your medical reports or navigate to RAGAS Evaluation to view your chat history and metrics.</p>",
             unsafe_allow_html=True
         )
 
@@ -90,14 +93,20 @@ class MedicalChatbot:
         if enable_ragas:
             openai_api_key = st.sidebar.text_input("Enter OpenAI API Key", type="password")
             if openai_api_key:
-                openai_api_key = openai_api_key.strip()  # Remove leading/trailing whitespace
+                openai_api_key = openai_api_key.strip()
                 if openai_api_key.startswith("sk-"):
                     os.environ["OPENAI_API_KEY"] = openai_api_key
-                    logger.info("OpenAI API key set successfully.")
+                    logger.info("✅ OpenAI API key set successfully.")
+                    st.session_state.enable_ragas = True
                 else:
                     st.sidebar.error("Invalid API key format. It should start with 'sk-'.")
+                    logger.info("❌ Wrong OpenAI API key.")
+                    st.session_state.enable_ragas = False
             else:
                 st.sidebar.warning("Please provide a valid OpenAI API key to enable RAGAS evaluation.")
+                st.session_state.enable_ragas = False
+        else:
+            st.session_state.enable_ragas = False
 
         if not self.uploaded_files:
             st.error("❌ Upload a PDF report on the Home page first.")
@@ -122,16 +131,21 @@ class MedicalChatbot:
                 print_qa(MedicalChatbot, user_query, response)
 
                 # RAGAS evaluation and storage
-                if enable_ragas and "OPENAI_API_KEY" in os.environ:
+                if st.session_state.get("enable_ragas", False) and "OPENAI_API_KEY" in os.environ:
                     try:
                         evaluate_and_store(
                             question=user_query,
                             generated_answer=response,
                             context=combined_context,
+                            user_id=st.session_state.user_id
                         )
                     except Exception as e:
-                        logger.error(f"Error during RAGAS evaluation: {e}")
-                        st.error("❌ Failed to evaluate and store metrics.")
+                        if "AuthenticationError" in str(e) or "invalid_api_key" in str(e).lower():
+                            logger.error(f"❌ OpenAI API authentication failed: {e}")
+                            st.error("❌ Authentication failed. Please check your OpenAI API key.")
+                        else:
+                            logger.error(f"❌ Error during RAGAS evaluation: {e}")
+                            st.error("❌ Failed to evaluate and store metrics.")
 
 if __name__ == "__main__":
     MedicalChatbot().main()
