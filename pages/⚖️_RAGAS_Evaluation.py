@@ -42,7 +42,7 @@ def display_ragas_evaluation():
         } for chat in chats])
 
         # Display DataFrame
-        st.dataframe(df, use_container_width=True)
+        st.dataframe(df, width='stretch')
 
     except Exception as e:
         logger.error(f"❌ Error retrieving RAGAS evaluation data: {e}")
