@@ -100,33 +100,41 @@ The **Assistant** page features a domain-specific Retrieval-Augmented Generation
    git clone https://github.com/MuhammadUmerKhan/Diagnosify-LLM-Powered-Medical-Report-Insights
    cd Diagnosify-LLM-Powered-Medical-Report-Insights
    ```
-2. **Set Up Virtual Environment**:
+2. **Install [uv](https://docs.astral.sh/uv/getting-started/installation/)**:
+   Follow the official installation guide for your OS. For Windows (PowerShell):
+   ```powershell
+   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+   ```
+3. **Set Up Environment and Dependencies**:
+   Create a virtual environment and install all dependencies automatically:
    ```bash
-   python -m venv env
-   source env/bin/activate  # Windows: env\Scripts\activate
+   uv sync
    ```
-3. **Install Dependencies**:
+4. **Activate Virtual Environment**:
    ```bash
-   pip install -r requirements.txt
+   # On Windows:
+   .venv\Scripts\activate
+   # On macOS/Linux:
+   source .venv/bin/activate
    ```
-   Key packages:
-   ```
-   streamlit==1.31.1
-   langchain==0.2.0
-   langchain-community==0.2.0
-   langchain-groq==0.2.0
-   langchain-text-splitters==0.2.0
-   sentence-transformers==2.7.0
-   faiss-cpu==1.8.0
-   pypdf2==3.0.1
-   reportlab==4.0.9
-   python-dotenv==1.0.0
-   pandas==2.2.0
-   ragas==0.1.8
-   pymongo==4.6.3
-   opencv-python==4.9.0  # Optional for images
-   pytesseract==0.3.10   # Optional for images
-   ```
+    Key packages (managed via `pyproject.toml`):
+    ```
+    streamlit>=1.49.1
+    langchain>=0.3.27
+    langchain-community>=0.3.29
+    langchain-groq>=0.3.7
+    langchain-text-splitters>=0.3.11
+    sentence-transformers>=5.1.0
+    faiss-cpu>=1.12.0
+    pypdf2>=3.0.1
+    pypdf>=6.0.0
+    reportlab>=4.4.3
+    python-dotenv>=1.1.1
+    ragas>=0.3.2
+    pymongo>=4.14.1
+    opencv-python>=4.12.0.88
+    pytesseract>=0.3.13
+    ```
 4. **Set API Key and MongoDB**:
    Create a `.env` file:
    ```bash
@@ -164,7 +172,7 @@ The **Assistant** page features a domain-specific Retrieval-Augmented Generation
 - **Image Support**: PNG/JPEG processing is disabled by default (commented in `ocr.py`, `preprocess.py`). Enable it after installing Tesseract and OpenCV 🖼️.
 - **Pydantic**: Use `pydantic==1.10.13` if `langchain` raises serialization errors:
    ```bash
-   pip install pydantic==1.10.13
+   uv add pydantic==1.10.13
    ```
 - **Temporary Files**: The `tmp/` folder is cleaned after processing, but ensure disk space is monitored ⏳.
 - **RAGAS Dependency**: Ensure OpenAI API key is valid, as RAGAS requires it for evaluation 🔐.

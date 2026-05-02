@@ -87,7 +87,7 @@ To run these scripts, you’ll need:
 
 1. **Install Dependencies**:
    ```bash
-   pip install -r requirements.txt
+   uv sync
    ```
 
 2. **Set Up Environment**:
