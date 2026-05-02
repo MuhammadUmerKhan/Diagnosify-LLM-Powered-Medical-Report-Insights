@@ -173,3 +173,53 @@ You're taking the first step by getting checked, and that's something to be prou
 2025-07-12 14:28:22,948 - INFO - Generating summary bullet points
 2025-07-12 14:28:23,553 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
 2025-07-12 14:28:23,555 - INFO - Temporary file deleted: C:\Users\muham\AppData\Local\Temp\tmpt933qwna.pdf
+2026-05-02 23:19:06,822 - INFO - \u2705 Created temporary directory: tmp
+2026-05-02 23:19:06,822 - INFO - \u2705 Configuration loaded successfully.
+2026-05-02 23:19:12,779 - INFO - \u27f3 Initializing singleton ChatGroq LLM instance
+2026-05-02 23:20:17,653 - INFO - Use pytorch device_name: cpu
+2026-05-02 23:20:17,653 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2026-05-02 23:20:21,319 - INFO - \u2705 Assigned new user_id: 87590f38-38ef-4750-a931-febb8823c58e
+2026-05-02 23:21:49,251 - INFO - \u267b Extracting text from: C:\Users\dell\AppData\Local\Temp\tmpu_kg9u5_.pdf
+2026-05-02 23:21:49,490 - INFO - \u2705 PDF text extraction completed
+2026-05-02 23:21:49,490 - INFO - \u267b Extracting structured data
+2026-05-02 23:21:54,603 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:21:54,619 - INFO - \u2705 Extracted 44 results
+2026-05-02 23:21:54,619 - INFO - \u267b Categorizing results
+2026-05-02 23:21:59,688 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:21:59,690 - ERROR - \u274c Categorization failed: Unterminated string starting at: line 278 column 5 (char 5567)
+2026-05-02 23:21:59,690 - INFO - \u267b Generating explanations
+2026-05-02 23:22:04,684 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:22:04,686 - INFO - \u2705 Explanations generated
+2026-05-02 23:22:04,686 - INFO - \u267b Generating summary bullet points
+2026-05-02 23:22:05,349 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:22:05,355 - INFO - \u2705 Temporary file deleted: C:\Users\dell\AppData\Local\Temp\tmpu_kg9u5_.pdf
+2026-05-02 23:22:14,310 - ERROR - \u274c Error displaying results: "None of [Index(['status'], dtype='object')] are in the [columns]"
+2026-05-02 23:24:17,376 - INFO - \u2705 Configuration loaded successfully.
+2026-05-02 23:24:18,605 - INFO - \u27f3 Initializing singleton ChatGroq LLM instance
+2026-05-02 23:24:28,739 - INFO - \u267b Extracting text from: C:\Users\dell\AppData\Local\Temp\tmp9br6_7vd.pdf
+2026-05-02 23:24:28,900 - INFO - \u2705 PDF text extraction completed
+2026-05-02 23:24:28,900 - INFO - \u267b Extracting structured data
+2026-05-02 23:24:34,764 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:24:34,774 - INFO - \u2705 Extracted 44 results
+2026-05-02 23:24:34,774 - INFO - \u267b Categorizing results
+2026-05-02 23:24:39,664 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:24:39,666 - ERROR - \u274c Categorization failed: Expecting value: line 272 column 14 (char 5633)
+2026-05-02 23:24:39,668 - INFO - \u2705 Temporary file deleted: C:\Users\dell\AppData\Local\Temp\tmp9br6_7vd.pdf
+2026-05-02 23:24:59,047 - INFO - Use pytorch device_name: cpu
+2026-05-02 23:24:59,047 - INFO - Load pretrained SentenceTransformer: sentence-transformers/all-MiniLM-L6-v2
+2026-05-02 23:25:03,343 - INFO - \u267b Extracting text from: C:\Users\dell\AppData\Local\Temp\tmpw_e6duek.pdf
+2026-05-02 23:25:03,487 - INFO - \u2705 PDF text extraction completed
+2026-05-02 23:25:03,487 - INFO - \u267b Extracting structured data
+2026-05-02 23:25:08,469 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:25:08,469 - INFO - \u2705 Extracted 44 results
+2026-05-02 23:25:08,470 - INFO - \u267b Categorizing results
+2026-05-02 23:25:13,355 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:25:13,356 - ERROR - \u274c Categorization failed: Unterminated string starting at: line 278 column 5 (char 5567)
+2026-05-02 23:25:13,356 - INFO - \u267b Generating explanations
+2026-05-02 23:25:18,239 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:25:18,241 - INFO - \u2705 Explanations generated
+2026-05-02 23:25:18,241 - INFO - \u267b Generating summary bullet points
+2026-05-02 23:25:18,987 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 200 OK"
+2026-05-02 23:25:18,990 - INFO - \u2705 Temporary file deleted: C:\Users\dell\AppData\Local\Temp\tmpw_e6duek.pdf
+2026-05-02 23:25:25,507 - ERROR - \u274c Error displaying results: "None of [Index(['status'], dtype='object')] are in the [columns]"
+2026-05-02 23:26:33,398 - INFO - \u2705 Configuration loaded successfully.
