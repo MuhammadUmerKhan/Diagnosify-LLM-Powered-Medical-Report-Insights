@@ -1,7 +1,7 @@
 import streamlit as st, os, tempfile
 from scripts.ocr import extract_text
 from scripts.processing import  \
-        (structure_data, categorize_results, explain_results_batch, generate_summary_bullet_points)
+        (structure_data, categorize_results, format_results_for_table, explain_results_batch, generate_summary_bullet_points)
 from scripts.utils import configure_llm, apply_custom_css
 from scripts.config import get_logger
 
@@ -19,7 +19,7 @@ st.sidebar.markdown("""
 st.sidebar.subheader("📤 Upload Medical Reports 🌡️")
 if "uploaded_files" not in st.session_state:
     st.session_state.uploaded_files = []
-uploaded_files = st.sidebar.file_uploader('', type=["pdf"], accept_multiple_files=True, key="global_uploader")
+uploaded_files = st.sidebar.file_uploader('Upload reports', type=["pdf"], accept_multiple_files=True, key="global_uploader", label_visibility="collapsed")
 if uploaded_files:
     st.session_state.uploaded_files = uploaded_files
     # Clear previous analysis results when new files are uploaded
@@ -104,8 +104,14 @@ if uploaded_files:
                 st.warning("⚠️ No categorized data generated.")
                 raise ValueError("Categorization failed")
 
-            test_results = [r for r in categorized_data if "test_name" in r or "Test" in r]
-            metadata = [r for r in categorized_data if "test_name" not in r and "Test" not in r]
+            # Use dedicated formatter for table results
+            test_results = format_results_for_table(categorized_data)
+            
+            # Extract metadata (non-test entries)
+            # Metadata is usually what's NOT in the formatted test results
+            test_names_in_table = {r.get("test_name") for r in test_results}
+            metadata = [r for r in categorized_data if r.get("test_name") not in test_names_in_table and "Test" not in str(r.keys())]
+            
             explanation = explain_results_batch(test_results) if test_results else None
             summary_bullets = generate_summary_bullet_points(explanation) if explanation and test_results else None
 
