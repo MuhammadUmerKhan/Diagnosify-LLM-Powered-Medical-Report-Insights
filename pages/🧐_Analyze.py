@@ -48,6 +48,10 @@ def main():
             st.markdown('<div class="card">', unsafe_allow_html=True)
             st.markdown("<h3 style='color:#ffd700'>🧪 Test Results 📊</h3>", unsafe_allow_html=True)
             df = pd.DataFrame(test_results)
+            # Ensure 'status' column exists to avoid indexing errors
+            if 'status' not in df.columns:
+                df['status'] = 'Unknown'
+                
             def color_status(val):
                 colors = {
                     "Critical": "color: #ff5252; font-weight: bold",
@@ -55,8 +59,8 @@ def main():
                     "Normal": "color: #00ff99; font-weight: bold"
                 }
                 return colors.get(val, "color: #00ff99")
-            styled_df = df.style.applymap(color_status, subset=['status'])
-            st.dataframe(styled_df, use_container_width=True)
+            styled_df = df.style.map(color_status, subset=['status'])
+            st.dataframe(styled_df, width='stretch')
             st.markdown('</div>', unsafe_allow_html=True)
 
             # Explanations
