@@ -3,7 +3,7 @@
 ## 📖 Overview
 **Diagnosify** is a user-friendly Streamlit app that makes medical reports easy to understand for everyone! 🩺 Built for a hackathon, it uses advanced AI to extract, analyze, and explain test results from reports (PDF, PNG, JPEG) 📄. With a vibrant dark theme 🎨, it offers clear insights, summaries, and a smart chatbot to answer your health questions in a supportive way 😊. Plus, it now evaluates chatbot responses for accuracy with RAGAS metrics 📈! Whether you’re checking test results or diving into chat details, Diagnosify is here to help! 🚀
 
-![](https://img.freepik.com/premium-vector/medical-check-list-health-analysis-research-report-illustration-flat-cartoon-design_101884-86.jpg)
+![Diagnosify Hero Image](assets/hero-thumbnail.png)
 
 ### 🎯 Goals
 - **Extract**: Pull text from reports using OCR 📝.
@@ -21,6 +21,10 @@
 - **PDF Export**: Save a professional PDF summary of your results 📄.
 - **RAGAS Evaluation**: Evaluates chatbot responses for accuracy with faithfulness scores 📊, ensuring trustworthy answers displayed on a dedicated page ⚖️.
 - **Cool UI**: Dark theme with neon green text, gold headings, and magenta buttons 🎨.
+
+## 📐 System Architecture
+
+![Diagnosify Architecture](assets/whiteboard-architecture.png)
 
 ## 🛠️ Tech Stack
 - **Frontend**: Streamlit for an interactive web interface 🌐.
